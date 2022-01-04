@@ -1,37 +1,21 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-
-export type PostData = {
-  id: string;
-  title: string;
-  content: string;
-
-  published: boolean;
-  datePublished: number;
-
-  subtitle?: string;
-  description?: string;
-  tags?: string[];
-
-  bannerPhoto?: string;
-  thumbnailPhoto?: string;
-};
-
-type RawFile = { path: string; contents: string };
+import { ContentType, PostData } from "@lib/types";
 
 const MD_FILE_DIR = "./data/md";
 
-export const getFiles = () => {
-  return fs.readdirSync(MD_FILE_DIR, "utf8");
-};
+type RawFile = { path: string; contents: string };
 
-export const loadMarkdownFile = (id: string): RawFile => {
-  const mdFile = fs.readFileSync(path.join(MD_FILE_DIR, `${id}.md`), "utf8");
+const loadMarkdownFile = (type: ContentType, id: string): RawFile => {
+  const mdFile = fs.readFileSync(
+    path.join(MD_FILE_DIR, type, `${id}.md`),
+    "utf8"
+  );
   return { path: id, contents: mdFile };
 };
 
-export const markdownToPost = (file: RawFile): PostData => {
+const markdownToPost = (file: RawFile): PostData => {
   const metadata = matter(file.contents);
   const post: PostData = {
     id: file.path,
@@ -56,24 +40,21 @@ export const markdownToPost = (file: RawFile): PostData => {
   return post;
 };
 
-export const loadPost = async (id: string): Promise<PostData> => {
-  const file = loadMarkdownFile(id);
+export const getFiles = (type: ContentType): string[] => {
+  return fs
+    .readdirSync(path.join(MD_FILE_DIR, type), "utf8")
+    .map((filename) => filename.replace(/\.md/, ""));
+};
+
+export const loadBlogPost = (id: string): PostData => {
+  const file = loadMarkdownFile(ContentType.Blog, id);
   return markdownToPost(file);
 };
 
-export const loadMarkdownFiles = () => {
-  const blogs = getFiles();
-  const paths = blogs.map((filename) => {
-    const id = filename.replace(/\.md/, "");
-    return loadMarkdownFile(id);
-  });
-
-  return paths;
-};
-
-export const loadBlogPosts = async (): Promise<PostData[]> => {
-  return loadMarkdownFiles()
-    .map(markdownToPost)
+export const loadBlogPosts = (): PostData[] => {
+  return getFiles(ContentType.Blog)
+    .map((filename) => loadMarkdownFile(ContentType.Blog, filename))
+    .map((file) => markdownToPost(file))
     .filter((p) => p.published)
     .sort((a, b) => (b.datePublished ?? 0) - (a.datePublished ?? 0));
 };

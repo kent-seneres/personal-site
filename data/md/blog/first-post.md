@@ -13,3 +13,10 @@ tags:
 ---
 
 Hello there
+
+```ts
+console.log("It works!");
+what;
+```
+
+who dat

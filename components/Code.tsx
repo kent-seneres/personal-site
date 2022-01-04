@@ -1,23 +1,27 @@
 import React from "react";
-import darcula from "react-syntax-highlighter/dist/cjs/styles/prism/darcula";
 import { PrismLight, PrismAsyncLight } from "react-syntax-highlighter";
+import darcula from "react-syntax-highlighter/dist/cjs/styles/prism/darcula";
 
 const SyntaxHighlighter =
   typeof window === "undefined" ? PrismLight : PrismAsyncLight;
 
-export default class Code extends React.PureComponent<{
-  language: string;
-  value?: string;
-}> {
-  render() {
-    const { language, value } = this.props;
-    return (
-      <SyntaxHighlighter
-        language={(language === "ts" ? "typescript" : language) || "typescript"}
-        style={darcula}
-      >
-        {value}
-      </SyntaxHighlighter>
-    );
-  }
-}
+type CodeProps = {
+  language?: string;
+  value: string;
+};
+
+const Code: React.FC<CodeProps> = (props) => {
+  const language = props.language ?? "ts";
+  const value = props.value;
+
+  return (
+    <SyntaxHighlighter
+      language={language === "ts" ? "typescript" : language}
+      style={darcula}
+    >
+      {value}
+    </SyntaxHighlighter>
+  );
+};
+
+export default React.memo(Code);
