@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next/types";
+import { GetStaticProps, NextPage } from "next/types";
 import { loadBlogPosts } from "@lib/loader";
 import { ContentType, PostData } from "@lib/types";
 import Posts from "@components/Posts";
@@ -9,7 +9,7 @@ export type BlogProps = {
   description: string;
 };
 
-const Blog: React.FC<BlogProps> = (props) => {
+const Blog: NextPage<BlogProps> = (props) => {
   const { posts, title, description } = props;
 
   return (

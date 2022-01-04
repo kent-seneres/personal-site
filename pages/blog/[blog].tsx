@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { getFiles, loadBlogPost } from "@lib/loader";
 import { PostData, ContentType } from "@lib/types";
@@ -8,7 +8,7 @@ type BlogPostProps = {
   post: PostData;
 };
 
-const BlogPost: React.FC<BlogPostProps> = (props) => {
+const BlogPost: NextPage<BlogPostProps> = (props) => {
   const { title, subtitle, content } = props.post;
   return (
     <div>
