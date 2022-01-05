@@ -12,10 +12,10 @@ const Post: React.FC<PostProps> = (props) => {
   const date = new Date(post.datePublished).toLocaleDateString();
 
   return (
-    <div className="flex flex-col my-4 p-4 text-left border rounded-md shadow-md">
+    <div className="flex flex-col py-4 text-left border-b">
       <div className="flex items-center justify-between">
         <Link href={props.href}>
-          <a className="text-xl font-semibold text-blue-500">{post.title}</a>
+          <a className="text-xl font-semibold text-sky-600">{post.title}</a>
         </Link>
         <p className="text-sm text-slate-500">{date}</p>
       </div>

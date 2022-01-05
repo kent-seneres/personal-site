@@ -17,7 +17,7 @@ const Blog: NextPage<BlogProps> = (props) => {
 
   return (
     <PageWrapper title={pageTitle}>
-      <div className="self-start m-4 text-left">
+      <div className="self-stretch m-4 py-4 text-left border-b">
         <p className="text-4xl font-semibold my-2">{title}</p>
         <p className="text-md">{description}</p>
       </div>

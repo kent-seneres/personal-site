@@ -15,5 +15,6 @@ export type PostData = {
 };
 
 export enum ContentType {
+  General = "/",
   Blog = "/blog",
 }

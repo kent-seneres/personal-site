@@ -7,6 +7,7 @@ const Home: NextPage = () => {
   return (
     <PageWrapper title={globals.name}>
       <h1 className="text-6xl font-bold">Welcome!</h1>
+      <p className="my-2 font-light">🚧 Site Under Construction 🚧</p>
       <div className="mt-4">
         <Nav alwaysVisible={true} />
       </div>

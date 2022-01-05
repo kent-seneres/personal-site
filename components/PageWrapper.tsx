@@ -13,18 +13,20 @@ const PageWrapper: React.FC<PageWrapperProps> = (props) => {
   const iconPath = props.iconPath ?? "/favicon.ico";
 
   return (
-    <div className="max-w-4xl mx-auto p-2">
-      <Head>
-        <title>{title}</title>
-        <link rel="icon" href={iconPath} />
-      </Head>
-      <div className="main flex flex-col items-center justify-center min-h-screen">
-        <Header />
-        <div className="main flex flex-col items-center justify-center w-full flex-1 text-center">
-          {props.children}
+    <div className="bg-gradient-to-r to-sky-100 from-slate-100 ">
+      <div className="max-w-4xl mx-auto p-2 ">
+        <Head>
+          <title>{title}</title>
+          <link rel="icon" href={iconPath} />
+        </Head>
+        <div className="main flex flex-col min-h-screen">
+          <Header />
+          <div className="flex flex-col items-center justify-center w-full flex-1 text-center">
+            {props.children}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };

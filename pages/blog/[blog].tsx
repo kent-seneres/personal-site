@@ -15,11 +15,11 @@ const BlogPost: NextPage<BlogPostProps> = (props) => {
 
   return (
     <PageWrapper title={post.title}>
-      <div className="self-start m-4 text-left">
-        <p className="text-4xl font-medium my-2">{post.title}</p>
+      <div className="self-stretch m-4 py-4 border-b">
+        <p className="text-5xl font-medium my-2">{post.title}</p>
         <p className="text-sm text-slate-500">{date}</p>
       </div>
-      <div className="flex-1 self-stretch text-left m-4">
+      <div className="flex-1 w-screen max-w-2xl p-4 text-left">
         <Markdown content={post.content} />
       </div>
     </PageWrapper>

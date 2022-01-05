@@ -46,15 +46,18 @@ export const getFiles = (type: ContentType): string[] => {
     .map((filename) => filename.replace(/\.md/, ""));
 };
 
-export const loadBlogPost = (id: string): PostData => {
-  const file = loadMarkdownFile(ContentType.Blog, id);
+export const loadPost = (type: ContentType, id: string): PostData => {
+  const file = loadMarkdownFile(type, id);
   return markdownToPost(file);
+};
+
+export const loadBlogPost = (id: string): PostData => {
+  return loadPost(ContentType.Blog, id);
 };
 
 export const loadBlogPosts = (): PostData[] => {
   return getFiles(ContentType.Blog)
-    .map((filename) => loadMarkdownFile(ContentType.Blog, filename))
-    .map((file) => markdownToPost(file))
+    .map((filename) => loadPost(ContentType.Blog, filename))
     .filter((p) => p.published)
     .sort((a, b) => (b.datePublished ?? 0) - (a.datePublished ?? 0));
 };
