@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { getFiles, loadBlogPost } from "@lib/loader";
 import { PostData, ContentType } from "@lib/types";
+import PageWrapper from "@components/PageWrapper";
 import Markdown from "@components/Markdown";
 
 type BlogPostProps = {
@@ -9,19 +10,19 @@ type BlogPostProps = {
 };
 
 const BlogPost: NextPage<BlogPostProps> = (props) => {
-  const { title, subtitle, content } = props.post;
-  return (
-    <div>
-      <div>
-        {title && <h1>{title}</h1>}
-        {subtitle && <h2>{subtitle}</h2>}
-        <br />
-      </div>
+  const { post } = props;
+  const date = new Date(post.datePublished).toLocaleDateString();
 
-      <div>
-        <Markdown content={content} />
+  return (
+    <PageWrapper title={post.title}>
+      <div className="self-start m-4 text-left">
+        <p className="text-4xl font-medium my-2">{post.title}</p>
+        <p className="text-sm text-slate-500">{date}</p>
       </div>
-    </div>
+      <div className="flex-1 self-stretch text-left m-4">
+        <Markdown content={post.content} />
+      </div>
+    </PageWrapper>
   );
 };
 

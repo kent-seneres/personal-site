@@ -1,8 +1,9 @@
 import { GetStaticProps, NextPage } from "next/types";
 import { loadBlogPosts } from "@lib/loader";
 import { ContentType, PostData } from "@lib/types";
-import Posts from "@components/Posts";
+import globals from "@lib/globals";
 import PageWrapper from "@components/PageWrapper";
+import Posts from "@components/Posts";
 
 export type BlogProps = {
   title: string;
@@ -12,9 +13,10 @@ export type BlogProps = {
 
 const Blog: NextPage<BlogProps> = (props) => {
   const { title, description, posts } = props;
+  const pageTitle = `Blog - ${globals.name}`;
 
   return (
-    <PageWrapper title="Blog">
+    <PageWrapper title={pageTitle}>
       <div className="self-start m-4 text-left">
         <p className="text-4xl font-semibold my-2">{title}</p>
         <p className="text-md">{description}</p>
