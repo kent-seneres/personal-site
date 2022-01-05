@@ -8,20 +8,19 @@ type MarkdownProps = {
 
 const Markdown: React.FC<MarkdownProps> = (props) => {
   return (
-    <div>
-      <ReactMarkdown
-        children={props.content}
-        components={{
-          code({ className, children }) {
-            const match = /language-(\w+)/.exec(className ?? "") ?? [];
-            const language = match[1];
-            return (
-              <Code language={language} value={String(children).trimEnd()} />
-            );
-          },
-        }}
-      />
-    </div>
+    <ReactMarkdown
+      components={{
+        code({ className, children }) {
+          const match = /language-(\w+)/.exec(className ?? "") ?? [];
+          const language = match[1];
+          return (
+            <Code language={language} value={String(children).trimEnd()} />
+          );
+        },
+      }}
+    >
+      {props.content}
+    </ReactMarkdown>
   );
 };
 
