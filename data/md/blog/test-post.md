@@ -1,7 +1,7 @@
 ---
 title: Test Post
 subtitle: first try
-description: First blog content coming at you in 2022
+description: First blog content coming at you in 2022!
 
 published: true
 datePublished: 2022/01/04

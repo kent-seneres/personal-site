@@ -1,10 +1,9 @@
 ---
 title: First Post
-subtitle: first try
-description: First blog content coming at you in 2022
+description: New year, new me
 
-published: true
-datePublished: 2022/01/04
+published: false
+datePublished: 2022/01/05
 
 tags:
   - nextjs
@@ -12,24 +11,11 @@ tags:
   - blog
 ---
 
-Hello there
+Hello there!
 
-```ts
-console.log("It works!");
-```
+TODO: Add content
 
-👀 who dat 👀
+### Resources
 
-\
-Arma virumque canō, Trōiae quī prīmus ab ōrīs\
-Ītaliam, fātō profugus, Lāvīniaque vēnit\
-lītora, multum ille et terrīs iactātus et altō\
-vī superum saevae memorem Iūnōnis ob īram;\
-multa quoque et bellō passus, dum conderet urbem,\
-inferretque deōs Latiō, genus unde Latīnum,\
-Albānīque patrēs, atque altae moenia Rōmae.\
-\
-Mūsa, mihī causās memorā, quō nūmine laesō,\
-quidve dolēns, rēgīna deum tot volvere cāsūs\
-īnsīgnem pietāte virum, tot adīre labōrēs\
-impulerit. Tantaene animīs caelestibus īrae?
+[https://github.com/colinhacks/devii](https://github.com/colinhacks/devii)  
+[https://bionicjulia.com/blog/setting-up-nextjs-markdown-blog-with-typescript](https://bionicjulia.com/blog/setting-up-nextjs-markdown-blog-with-typescript)
