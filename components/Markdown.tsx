@@ -9,6 +9,7 @@ type MarkdownProps = {
 const Markdown: React.FC<MarkdownProps> = (props) => {
   return (
     <ReactMarkdown
+      className="prose"
       components={{
         code({ className, children }) {
           const match = /language-(\w+)/.exec(className ?? "") ?? [];

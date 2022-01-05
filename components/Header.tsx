@@ -14,7 +14,6 @@ const Header: React.FC = () => (
           alt="Picture of the author"
           width={36}
           height={36}
-          placeholder="blur"
           className="rounded-2xl"
         />
         <p className="mx-2">{globals.name}</p>

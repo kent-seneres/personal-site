@@ -23,7 +23,7 @@ const NavItems: React.FC = () => {
         <NavItem href="/blog">Blog</NavItem>
         <NavItem href="/pictures">Pictures</NavItem>
         <NavItem href="/projects">Projects</NavItem>
-        <NavItem href="/About">About</NavItem>
+        <NavItem href="/about">About</NavItem>
       </ul>
     </nav>
   );

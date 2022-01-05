@@ -19,9 +19,9 @@ const PageWrapper: React.FC<PageWrapperProps> = (props) => {
           <title>{title}</title>
           <link rel="icon" href={iconPath} />
         </Head>
-        <div className="main flex flex-col items-center justify-center min-h-screen">
+        <div className="main flex flex-col min-h-screen">
           <Header />
-          <div className="main flex flex-col items-center justify-center w-full flex-1 text-center">
+          <div className="flex flex-col items-center justify-center w-full flex-1 text-center">
             {props.children}
           </div>
         </div>
