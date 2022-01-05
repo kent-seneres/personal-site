@@ -9,7 +9,7 @@ type NavItemProps = {
 const NavItem: React.FC<NavItemProps> = (props) => {
   return (
     <Link href={{ pathname: props.href }}>
-      <a className="p-2 text-center border w-24 rounded-xl hover:text-blue-500 hover:border-blue-500 focus:text-blue-600">
+      <a className="p-2 text-center border border-slate-300 w-24 rounded-xl hover:text-sky-500 hover:border-sky-500 focus:text-sky-600">
         {props.children}
       </a>
     </Link>
