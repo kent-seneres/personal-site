@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
   const year = new Date().getFullYear();
 
   return (
-    <div className="footer flex items-center justify-center w-full h-16 border-t">
+    <div className="footer flex items-center justify-center w-full h-16">
       <p className="text-sm">
         © {year} {globals.name} • Powered by{" "}
       </p>
