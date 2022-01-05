@@ -27,6 +27,7 @@ const About: NextPage<AboutProps> = (props) => {
             width={256}
             height={256}
             className="rounded-2xl"
+            placeholder="blur"
           />
           <p className="mt-4 text-xl font-medium">{globals.name}</p>
           <p className="text-md text-slate-400">{globals.jobTitle}</p>
