@@ -44,7 +44,7 @@ const NavModal: React.FC<NavModalProps> = (props) => {
 
   return (
     <div className={`${props.visible ? "block" : "hidden"}`}>
-      <div className="fixed flex justify-end items-start inset-0 bg-gray-600 bg-opacity-50 h-full w-full">
+      <div className="fixed z-10 flex justify-end items-start inset-0 bg-gray-600 bg-opacity-50 h-full w-full">
         <div className="flex m-4 p-4 shadow-lg rounded-lg bg-white">
           <NavItems />
           <button className="self-start ml-4 py-1" onClick={props.onDismiss}>
