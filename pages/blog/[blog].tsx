@@ -16,12 +16,12 @@ const BlogPost: NextPage<BlogPostProps> = (props) => {
   return (
     <PageWrapper title={post.title}>
       <div className="self-stretch m-4 py-4 border-b">
-        <p className="text-5xl font-medium my-2">{post.title}</p>
+        <h1 className="text-5xl font-medium my-2">{post.title}</h1>
         <p className="text-sm text-slate-500">{date}</p>
       </div>
-      <div className="flex-1 w-screen max-w-2xl p-4 text-left">
+      <section className="flex-1 w-screen max-w-2xl p-4 text-left">
         <Markdown content={post.content} />
-      </div>
+      </section>
     </PageWrapper>
   );
 };

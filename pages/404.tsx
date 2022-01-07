@@ -6,7 +6,7 @@ import PageWrapper from "@components/PageWrapper";
 const Error404: NextPage = () => {
   return (
     <PageWrapper title={globals.name}>
-      <p className="text-6xl font-bold">Ruh Roh!</p>
+      <h1 className="text-6xl font-bold">Ruh Roh!</h1>
       <p className="text-md my-2">[404] This page could not be found.</p>
 
       <Link href={"/"}>

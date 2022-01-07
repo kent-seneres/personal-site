@@ -5,10 +5,10 @@ const Footer: React.FC = () => {
   const year = new Date().getFullYear();
 
   return (
-    <div className="footer flex items-center justify-center w-full h-16">
-      <p className="text-sm">
+    <footer className="flex items-center justify-center w-full h-16">
+      <span className="text-sm">
         © {year} {globals.name} • Powered by{" "}
-      </p>
+      </span>
       <a
         href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
         target="_blank"
@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
           <Image src="/vercel.svg" alt="Vercel Logo" layout="fill" />
         </div>
       </a>
-    </div>
+    </footer>
   );
 };
 
