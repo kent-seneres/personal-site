@@ -18,12 +18,12 @@ const Blog: NextPage<BlogProps> = (props) => {
   return (
     <PageWrapper title={pageTitle}>
       <div className="self-stretch m-4 py-4 text-left border-b">
-        <p className="text-4xl font-semibold my-2">{title}</p>
+        <h1 className="text-4xl font-semibold my-2">{title}</h1>
         <p className="text-md">{description}</p>
       </div>
-      <div className="flex-1 self-stretch mx-4">
+      <section className="flex-1 self-stretch mx-4">
         <Posts type={ContentType.Blog} posts={posts} />
-      </div>
+      </section>
     </PageWrapper>
   );
 };

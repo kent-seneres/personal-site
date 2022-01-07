@@ -17,7 +17,7 @@ const About: NextPage<AboutProps> = (props) => {
   return (
     <PageWrapper title={pageTitle}>
       <div className="self-stretch m-4 py-4 border-b text-left">
-        <p className="text-4xl font-semibold">About</p>
+        <h1 className="text-4xl font-semibold">About</h1>
       </div>
       <div className="flex flex-col sm:flex-row flex-1 self-stretch">
         <div className="flex flex-col mx-auto sm:m-4">
@@ -32,9 +32,9 @@ const About: NextPage<AboutProps> = (props) => {
           <p className="mt-4 text-xl font-medium">{globals.name}</p>
           <p className="text-md text-slate-400">{globals.jobTitle}</p>
         </div>
-        <div className="text-left m-4">
+        <section className="text-left m-4">
           <Markdown content={props.aboutPost.content} />
-        </div>
+        </section>
       </div>
     </PageWrapper>
   );

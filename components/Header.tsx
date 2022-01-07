@@ -6,7 +6,7 @@ import Nav from "@components/Nav";
 import profile from "data/images/profile.jpg";
 
 const Header: React.FC = () => (
-  <div className="header flex min-w-full p-4 items-center">
+  <header className="flex min-w-full p-4 items-center">
     <Link href={{ pathname: "/" }}>
       <a className="flex hover:text-sky-500 items-center">
         <Image
@@ -16,13 +16,13 @@ const Header: React.FC = () => (
           height={36}
           className="rounded-2xl"
         />
-        <p className="mx-2">{globals.name}</p>
+        <span className="mx-2">{globals.name}</span>
       </a>
     </Link>
     <div className="flex flex-1 justify-end">
       <Nav />
     </div>
-  </div>
+  </header>
 );
 
 export default Header;

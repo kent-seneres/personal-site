@@ -8,8 +8,11 @@ type PostProps = {
 
 const Post: React.FC<PostProps> = (props) => {
   const { post } = props;
-
-  const date = new Date(post.datePublished).toLocaleDateString();
+  const date = new Date(post.datePublished).toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <div className="flex flex-col py-4 text-left border-b">
@@ -19,7 +22,7 @@ const Post: React.FC<PostProps> = (props) => {
         </Link>
         <p className="text-sm text-slate-500">{date}</p>
       </div>
-      <p className="mt-4">{post.description}</p>
+      <p className="mt-2">{post.description}</p>
     </div>
   );
 };
