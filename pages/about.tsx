@@ -17,7 +17,7 @@ const About: NextPage<AboutProps> = (props) => {
   return (
     <PageWrapper title={pageTitle}>
       <div className="self-stretch m-4 py-4 border-b text-left">
-        <h1 className="text-4xl font-semibold">About</h1>
+        <h1 className="text-4xl font-semibold my-2">About</h1>
       </div>
       <div className="flex flex-col sm:flex-row flex-1 self-stretch">
         <div className="flex flex-col mx-auto sm:m-4">
