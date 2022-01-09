@@ -3,7 +3,7 @@ import Image from "next/image";
 import globals from "@lib/globals";
 import Nav from "@components/Nav";
 
-import profile from "data/images/profile.jpg";
+import profile from "public/images/profile.jpg";
 
 const Header: React.FC = () => (
   <header className="flex min-w-full p-4 items-center">
