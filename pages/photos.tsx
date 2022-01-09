@@ -1,8 +1,12 @@
-import PageWrapper from "@components/PageWrapper";
+import { GetStaticProps, NextPage } from "next/types";
+import Image from "next/image";
 import globals from "@lib/globals";
-import { NextPage } from "next/types";
+import { getPhotos, Photo } from "@lib/api";
+import PageWrapper from "@components/PageWrapper";
 
-export type PhotosProps = {};
+export type PhotosProps = {
+  photos: Photo[];
+};
 
 const Photos: NextPage<PhotosProps> = (props) => {
   const pageTitle = `Pictures - ${globals.name}`;
@@ -12,11 +16,30 @@ const Photos: NextPage<PhotosProps> = (props) => {
       <div className="self-stretch m-4 py-4 text-left border-b">
         <h1 className="text-4xl font-semibold my-2">Photos</h1>
       </div>
-      <section className="flex-1 self-stretch mx-4">
-        {/* <Posts type={ContentType.Blog} posts={posts} /> */}
+      <section className="flex flex-wrap justify-center items-center space-x-2 space-y-2">
+        {props.photos.map((photo) => (
+          <div className="max-w-xs">
+            <Image
+              src={photo.webContentLink}
+              alt={photo.webContentLink}
+              width={photo.imageMediaMetadata.width}
+              height={photo.imageMediaMetadata.height}
+              title={photo.description}
+            />
+          </div>
+        ))}
       </section>
     </PageWrapper>
   );
+};
+
+export const getStaticProps: GetStaticProps<PhotosProps> = async () => {
+  const photos = await getPhotos();
+
+  return {
+    props: { photos },
+    revalidate: 1,
+  };
 };
 
 export default Photos;
