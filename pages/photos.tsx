@@ -16,18 +16,22 @@ const Photos: NextPage<PhotosProps> = (props) => {
       <div className="self-stretch m-4 py-4 text-left border-b">
         <h1 className="text-4xl font-semibold my-2">Photos</h1>
       </div>
-      <section className="flex flex-wrap justify-center items-center space-x-2 space-y-2">
-        {props.photos.map((photo) => (
-          <div className="max-w-xs">
-            <Image
-              src={photo.webContentLink}
-              alt={photo.webContentLink}
-              width={photo.imageMediaMetadata.width}
-              height={photo.imageMediaMetadata.height}
-              title={photo.description}
-            />
-          </div>
-        ))}
+      <section className="flex-1 self-stretch">
+        <div className="flex flex-row flex-wrap">
+          {props.photos.map((photo) => (
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-auto p-1">
+              <Image
+                src={photo.webContentLink}
+                alt={photo.webContentLink}
+                width="100%"
+                height="100%"
+                layout="responsive"
+                objectFit="cover"
+                title={photo.description}
+              />
+            </div>
+          ))}
+        </div>
       </section>
     </PageWrapper>
   );
