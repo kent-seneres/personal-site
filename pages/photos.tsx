@@ -9,7 +9,7 @@ export type PhotosProps = {
 };
 
 const Photos: NextPage<PhotosProps> = (props) => {
-  const pageTitle = `Pictures - ${globals.name}`;
+  const pageTitle = `Photos - ${globals.name}`;
 
   return (
     <PageWrapper title={pageTitle}>
