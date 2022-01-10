@@ -28,9 +28,10 @@ const getDriveApi = (scopes: string | string[]) => {
 };
 
 const ROOT_PUBLIC_PATH = "public";
+const DRIVE_IMAGE_PATH = path.join(ROOT_PUBLIC_PATH, "images", "drive");
 
 const getImageFilePath = (fileName: string): string => {
-  return path.join(ROOT_PUBLIC_PATH, "images", "drive", fileName);
+  return path.join(DRIVE_IMAGE_PATH, fileName);
 };
 
 const downloadFile = async (url: string, filePath: string) => {
@@ -52,6 +53,10 @@ export const getPhotos = async (): Promise<Photo[]> => {
   const driveApi = getDriveApi(scopes);
 
   try {
+    if (!fs.existsSync(DRIVE_IMAGE_PATH)) {
+      fs.mkdirSync(DRIVE_IMAGE_PATH, { recursive: true });
+    }
+
     // get all files in the photos folder
     const response = await driveApi.files.list({
       q: `'${PHOTOS_FOLDER_ID}' in parents`,
