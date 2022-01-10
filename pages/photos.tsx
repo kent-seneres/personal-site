@@ -19,15 +19,18 @@ const Photos: NextPage<PhotosProps> = (props) => {
       <section className="flex-1 self-stretch">
         <div className="flex flex-row flex-wrap">
           {props.photos.map((photo) => (
-            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-auto p-1">
+            <div
+              key={photo.id}
+              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-auto p-1"
+            >
               <Image
-                src={photo.webContentLink}
-                alt={photo.webContentLink}
+                src={photo.path}
+                alt={photo.name}
                 width="100%"
                 height="100%"
                 layout="responsive"
                 objectFit="cover"
-                title={photo.description}
+                title={photo.description ?? undefined}
               />
             </div>
           ))}

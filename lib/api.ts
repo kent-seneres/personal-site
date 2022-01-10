@@ -1,4 +1,19 @@
 import { auth, drive } from "@googleapis/drive";
+import fs from "fs";
+import path from "path";
+import fetch from "node-fetch";
+
+export type Photo = {
+  path: string;
+  id: string;
+  name: string;
+  modifiedTime: string;
+  imageMediaMetadata: {
+    height: number;
+    width: number;
+  };
+  description: string | null;
+};
 
 const getDriveApi = (scopes: string | string[]) => {
   const jwt = new auth.JWT({
@@ -10,20 +25,26 @@ const getDriveApi = (scopes: string | string[]) => {
   return drive({ version: "v3", auth: jwt });
 };
 
-export type Photo = {
-  id: string;
-  name: string;
-  modifiedTime: string;
-  imageMediaMetadata: {
-    height: number;
-    width: number;
-  };
-  webContentLink: string;
-  description?: string;
+const ROOT_PUBLIC_PATH = "public";
+
+const getImageFilePath = (fileName: string): string => {
+  return path.join(ROOT_PUBLIC_PATH, "images", "drive", fileName);
+};
+
+const downloadFile = async (url: string, filePath: string) => {
+  const res = await fetch(url);
+  const fileStream = fs.createWriteStream(filePath);
+
+  await new Promise((resolve, reject) => {
+    res.body?.pipe(fileStream);
+    res.body?.on("error", reject);
+    fileStream.on("finish", resolve);
+  });
 };
 
 export const getPhotos = async (): Promise<Photo[]> => {
   const PHOTOS_FOLDER_ID = "1-e1OoDPxuuN6S89vbSMSXNBVwd2Ujj9V";
+  const photos: Photo[] = [];
 
   const scopes = ["https://www.googleapis.com/auth/drive.readonly"];
   const driveApi = getDriveApi(scopes);
@@ -32,16 +53,33 @@ export const getPhotos = async (): Promise<Photo[]> => {
     // get all files in the photos folder
     const response = await driveApi.files.list({
       q: `'${PHOTOS_FOLDER_ID}' in parents`,
+      // query fields must include relevant properties indicated in `Photo` type
       fields:
-        "files(id, name, description, modifiedTime, imageMediaMetadata, webContentLink)",
+        "files(id, name, description, fileExtension, modifiedTime, imageMediaMetadata, webContentLink)",
     });
 
-    const photos = response.data.files?.map((file) => file as Photo) ?? [];
-    console.log(photos);
-    return photos;
+    for (const file of response.data.files ?? []) {
+      const filePath = getImageFilePath(`${file.id}.${file.fileExtension}`);
+      if (file.webContentLink && !fs.existsSync(filePath)) {
+        await downloadFile(file.webContentLink, filePath);
+      }
+
+      // assert that properties are defined, since they should be included in query
+      photos.push({
+        path: filePath.replace(ROOT_PUBLIC_PATH, ""),
+        id: file.id!,
+        name: file.name!,
+        modifiedTime: file.modifiedTime!,
+        imageMediaMetadata: {
+          height: file.imageMediaMetadata?.height!,
+          width: file.imageMediaMetadata?.width!,
+        },
+        description: file.description ?? null,
+      });
+    }
   } catch (err) {
     console.log(err);
   }
 
-  return [];
+  return photos;
 };
