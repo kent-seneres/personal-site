@@ -30,6 +30,8 @@ const Photos: NextPage<PhotosProps> = (props) => {
                 height="100%"
                 layout="responsive"
                 objectFit="cover"
+                placeholder="blur"
+                blurDataURL={photo.blurDataURL}
                 title={photo.description ?? undefined}
               />
             </div>

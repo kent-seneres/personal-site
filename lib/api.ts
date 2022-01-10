@@ -2,9 +2,11 @@ import { auth, drive } from "@googleapis/drive";
 import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
+import { getPlaiceholder } from "plaiceholder";
 
 export type Photo = {
   path: string;
+  blurDataURL: string;
   id: string;
   name: string;
   modifiedTime: string;
@@ -64,9 +66,14 @@ export const getPhotos = async (): Promise<Photo[]> => {
         await downloadFile(file.webContentLink, filePath);
       }
 
+      // trim off root public directory from path for image src
+      const imagePath = filePath.replace(ROOT_PUBLIC_PATH, "");
+      const blurPlaceholder = await getPlaiceholder(imagePath);
+
       // assert that properties are defined, since they should be included in query
       photos.push({
-        path: filePath.replace(ROOT_PUBLIC_PATH, ""),
+        path: imagePath,
+        blurDataURL: blurPlaceholder.base64,
         id: file.id!,
         name: file.name!,
         modifiedTime: file.modifiedTime!,
