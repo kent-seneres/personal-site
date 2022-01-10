@@ -23,6 +23,7 @@ const Photos: NextPage<PhotosProps> = (props) => {
               key={photo.id}
               className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-auto p-1"
             >
+              <span className="text-xs">{photo.path}</span>
               <Image
                 src={photo.path}
                 alt={photo.name}
