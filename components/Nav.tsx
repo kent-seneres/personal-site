@@ -1,29 +1,15 @@
-import Link from "next/link";
 import React from "react";
 import { FiXCircle, FiMoreVertical } from "react-icons/fi";
-
-type NavItemProps = {
-  href: string;
-};
-
-const NavItem: React.FC<NavItemProps> = (props) => {
-  return (
-    <Link href={{ pathname: props.href }}>
-      <a className="p-2 text-center border border-slate-300 w-24 rounded-xl hover:text-sky-500 hover:border-sky-500 focus:text-sky-600">
-        {props.children}
-      </a>
-    </Link>
-  );
-};
+import LinkButton from "@components/LinkButton";
 
 const NavItems: React.FC = () => {
   return (
     <nav className="text-sm font-medium">
       <ul className="flex flex-col space-y-2 sm:flex-row sm:flex-wrap sm:space-y-0 sm:space-x-2">
-        <NavItem href="/blog">Blog</NavItem>
-        <NavItem href="/pictures">Pictures</NavItem>
-        <NavItem href="/projects">Projects</NavItem>
-        <NavItem href="/about">About</NavItem>
+        <LinkButton href="/blog">Blog</LinkButton>
+        <LinkButton href="/photos">Photos</LinkButton>
+        <LinkButton href="/projects">Projects</LinkButton>
+        <LinkButton href="/about">About</LinkButton>
       </ul>
     </nav>
   );
