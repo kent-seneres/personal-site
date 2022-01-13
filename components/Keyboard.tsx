@@ -32,18 +32,18 @@ type KeyboardProps = {
 
 const Keyboard = React.forwardRef<HTMLDivElement, KeyboardProps>(
   (props, ref) => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (/^[a-zA-Z]$|\b(Enter|Backspace)\b/.test(e.key)) {
-        props.onKeyPress(e.key.toLowerCase());
-      }
-    };
-
     React.useEffect(() => {
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (/^[a-zA-Z]$|\b(Enter|Backspace)\b/.test(e.key)) {
+          props.onKeyPress(e.key.toLowerCase());
+        }
+      };
+
       document.addEventListener("keydown", onKeyDown, true);
       return () => {
         document.removeEventListener("keydown", onKeyDown, true);
       };
-    }, [props.onKeyPress]);
+    }, [props]);
 
     const mapToKey = (k: string) => (
       <Key key={k} value={k} onClick={props.onKeyPress} />
@@ -61,5 +61,7 @@ const Keyboard = React.forwardRef<HTMLDivElement, KeyboardProps>(
     );
   }
 );
+
+Keyboard.displayName = "Keyboard";
 
 export default Keyboard;
