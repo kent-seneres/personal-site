@@ -171,9 +171,7 @@ const useGame = ({ answer }: GameProps) => {
     setActiveRow([]);
   };
 
-  const backSpace = () => {
-    setActiveRow((b) => b.slice(0, -1));
-  };
+  const backSpace = () => setActiveRow((b) => b.slice(0, -1));
 
   const add = (c: string) => {
     if (activeRow.length === answer.length) {
@@ -205,11 +203,13 @@ const useGame = ({ answer }: GameProps) => {
 
 type DoneModal = {
   visible: boolean;
+  onShare: () => void;
   onDismiss: () => void;
 };
 
 const DoneModal: React.FC<DoneModal> = (props) => {
   const [timeRemaining, setTimeRemaining] = React.useState<string>("");
+
   React.useEffect(() => {
     document.addEventListener("click", props.onDismiss, true);
     return () => {
@@ -254,7 +254,7 @@ const DoneModal: React.FC<DoneModal> = (props) => {
           </div>
           <button
             className="bg-sky-100 rounded-lg py-2 px-8 my-2 mx-auto"
-            onClick={props.onDismiss}
+            onClick={props.onShare}
           >
             share
           </button>
@@ -272,6 +272,23 @@ const Tortle: NextPage = () => {
   const { board, activeRow, done, onKey } = useGame({
     answer: ANSWER,
   });
+
+  const share = () => {
+    const results = board[board.length - 1]
+      .map((t) => {
+        switch (t.state) {
+          case LetterState.CORRECT:
+            return "🟩";
+          case LetterState.MISPLACE:
+            return "🟨";
+          default:
+            return "⬜";
+        }
+      })
+      .join(" ");
+
+    navigator.clipboard.writeText(results);
+  };
 
   React.useEffect(() => {
     if (done) {
@@ -296,6 +313,7 @@ const Tortle: NextPage = () => {
 
       <DoneModal
         visible={doneVisible}
+        onShare={() => share()}
         onDismiss={() => setDoneVisible(false)}
       />
     </div>
