@@ -78,12 +78,14 @@ const Board: React.FC<BoardProps> = (props) => {
 
 type GameProps = {
   answer: string;
+  limit: number;
 };
-const useGame = ({ answer }: GameProps) => {
+const useGame = ({ answer, limit }: GameProps) => {
   const [board, setBoard] = React.useState<AnswerTile[][]>([]);
   const [activeRow, setActiveRow] = React.useState<string[]>([]);
 
   const [done, setDone] = React.useState(false);
+  const [winner, setWinner] = React.useState(false);
 
   const submit = () => {
     if (activeRow.length !== answer.length) {
@@ -125,7 +127,10 @@ const useGame = ({ answer }: GameProps) => {
       return t;
     });
 
-    if (result.every((t) => t.state === LetterState.CORRECT)) {
+    const win = result.every((t) => t.state === LetterState.CORRECT);
+    setWinner(win);
+
+    if (win || board.length + 1 === limit) {
       setDone(true);
     }
 
@@ -161,7 +166,7 @@ const useGame = ({ answer }: GameProps) => {
     }
   };
 
-  return { board, activeRow, done, onKey };
+  return { board, activeRow, done, winner, onKey };
 };
 
 type DoneModal = {
@@ -230,8 +235,9 @@ const ANSWER = "tortle";
 const Tortle: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
 
-  const { board, activeRow, done, onKey } = useGame({
+  const { board, activeRow, done, winner, onKey } = useGame({
     answer: ANSWER,
+    limit: 1,
   });
 
   const share = () => {
@@ -248,7 +254,8 @@ const Tortle: NextPage = () => {
       })
       .join(" ");
 
-    navigator.clipboard.writeText(results);
+    const title = winner ? `🐢 ${ANSWER} 🐢` : ANSWER;
+    navigator.clipboard.writeText(`${title}\n\n${results}`);
   };
 
   React.useEffect(() => {
@@ -262,7 +269,7 @@ const Tortle: NextPage = () => {
       <Head>
         <title>{ANSWER} - a daily word thing</title>
       </Head>
-      <h1 className="text-6xl font-bold border-b pb-2">{ANSWER}</h1>
+      <h1 className="text-6xl font-bold border-b p-2 m-4">{ANSWER}</h1>
 
       <Board
         size={ANSWER.length}
