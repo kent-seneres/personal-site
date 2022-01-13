@@ -8,11 +8,11 @@ type KeyProps = {
 const Key: React.FC<KeyProps> = (props) => {
   return (
     <button
-      className="flex flex-1 items-center justify-center bg-slate-400 rounded-lg m-0.5"
+      className="flex flex-1 h-12 items-center justify-center bg-slate-400 rounded-md m-0.5"
       onClick={() => props.onClick(props.value)}
     >
       <span
-        className={`text-xl text-slate-50 py-2 ${
+        className={`text-md text-slate-50 py-2 ${
           props.value.length > 0 ? "px-2" : ""
         }`}
       >
@@ -49,7 +49,7 @@ const Keyboard: React.FC<KeyboardProps> = (props) => {
   );
 
   return (
-    <div className="flex p-4 flex-col self-stretch items-stretch align-items-center">
+    <div className="flex flex-col self-stretch items-stretch align-items-center">
       <div className="flex">{ROW_1.map(mapToKey)}</div>
       <div className="flex mx-6">{ROW_2.map(mapToKey)}</div>
       <div className="flex">{ROW_3.map(mapToKey)}</div>

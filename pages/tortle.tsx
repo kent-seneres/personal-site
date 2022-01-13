@@ -27,7 +27,7 @@ const Tile: React.FC<TileProps> = (props) => {
 
   return (
     <div
-      className={`flex items-center justify-center border-2 border-slate-400 w-16 h-16 m-0.5 ${color}`}
+      className={`flex flex-1 h-16 max-w-[4rem] items-center justify-center border-2 border-slate-400 m-0.5 ${color}`}
     >
       <span className="text-2xl font-bold text-slate-50">{props.value}</span>
     </div>
@@ -46,11 +46,12 @@ type BoardProps = {
 
   done: boolean;
 };
+
 const Board: React.FC<BoardProps> = (props) => {
   return (
-    <div className="flex flex-col my-4">
+    <div className="flex flex-col my-4 self-stretch">
       {props.board.map((row, i) => (
-        <div key={`${row.join()}${i}`} className="flex">
+        <div key={`${row.join()}${i}`} className="flex justify-center">
           {row.map((tile, i) => (
             <Tile
               key={`${tile.value}${i}`}
@@ -61,7 +62,7 @@ const Board: React.FC<BoardProps> = (props) => {
         </div>
       ))}
       {!props.done && (
-        <div className="flex">
+        <div className="flex justify-center">
           {Array(props.size)
             .fill("")
             .map((tile, i) => (
@@ -266,7 +267,7 @@ const Tortle: NextPage = () => {
   }, [done]);
 
   return (
-    <div className="flex flex-col m-auto max-w-lg min-h-screen items-center justify-between">
+    <div className="flex flex-col m-auto py-2 max-w-lg min-h-screen items-center justify-between">
       <Head>
         <title>{ANSWER} - a daily word thing</title>
       </Head>
