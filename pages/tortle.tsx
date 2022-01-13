@@ -41,6 +41,8 @@ type BoardProps = {
   size: number;
   board: AnswerTile[][];
   activeRow: string[];
+
+  done: boolean;
 };
 const Board: React.FC<BoardProps> = (props) => {
   return (
@@ -56,17 +58,19 @@ const Board: React.FC<BoardProps> = (props) => {
           ))}
         </div>
       ))}
-      <div className="flex">
-        {Array(props.size)
-          .fill("")
-          .map((tile, i) => (
-            <Tile
-              key={`active-${tile.value}${i}`}
-              value={props.activeRow[i]}
-              state={tile}
-            />
-          ))}
-      </div>
+      {!props.done && (
+        <div className="flex">
+          {Array(props.size)
+            .fill("")
+            .map((tile, i) => (
+              <Tile
+                key={`active-${tile.value}${i}`}
+                value={props.activeRow[i]}
+                state={tile}
+              />
+            ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -111,11 +115,12 @@ const Keyboard: React.FC<KeyboardProps> = (props) => {
 
 type GameProps = {
   answer: string;
-  onDone: (success: boolean) => void;
 };
-const useGame = ({ answer, onDone }: GameProps) => {
+const useGame = ({ answer }: GameProps) => {
   const [board, setBoard] = React.useState<AnswerTile[][]>([]);
   const [activeRow, setActiveRow] = React.useState<string[]>([]);
+
+  const [done, setDone] = React.useState(false);
 
   const submit = () => {
     if (activeRow.length !== answer.length) {
@@ -159,11 +164,11 @@ const useGame = ({ answer, onDone }: GameProps) => {
     });
 
     if (result.every((t) => t.state === LetterState.CORRECT)) {
-      onDone(true);
-    } else {
-      setBoard((board) => [...board, result]);
-      setActiveRow([]);
+      setDone(true);
     }
+
+    setBoard((board) => [...board, result]);
+    setActiveRow([]);
   };
 
   const backSpace = () => {
@@ -179,6 +184,10 @@ const useGame = ({ answer, onDone }: GameProps) => {
   };
 
   const onKey = (value: string) => {
+    if (done) {
+      return;
+    }
+
     switch (value) {
       case "enter":
         submit();
@@ -191,7 +200,7 @@ const useGame = ({ answer, onDone }: GameProps) => {
     }
   };
 
-  return { board, activeRow, onKey };
+  return { board, activeRow, done, onKey };
 };
 
 type DoneModal = {
@@ -260,14 +269,15 @@ const ANSWER = "tortle";
 const Tortle: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
 
-  const onDone = () => {
-    setDoneVisible(true);
-  };
-
-  const { board, activeRow, onKey } = useGame({
+  const { board, activeRow, done, onKey } = useGame({
     answer: ANSWER,
-    onDone: onDone,
   });
+
+  React.useEffect(() => {
+    if (done) {
+      setDoneVisible(true);
+    }
+  }, [done]);
 
   return (
     <div className="flex flex-col p-4 m-auto max-w-lg min-h-screen items-center justify-between">
@@ -276,7 +286,12 @@ const Tortle: NextPage = () => {
       </Head>
       <h1 className="text-6xl font-bold border-b pb-2">{ANSWER}</h1>
 
-      <Board size={ANSWER.length} board={board} activeRow={activeRow} />
+      <Board
+        size={ANSWER.length}
+        done={done}
+        board={board}
+        activeRow={activeRow}
+      />
       <Keyboard onKeyPress={onKey} />
 
       <DoneModal
