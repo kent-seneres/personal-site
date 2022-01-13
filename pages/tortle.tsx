@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
+import Keyboard from "@components/Keyboard";
 
 const enum LetterState {
   UNKNOWN,
@@ -75,44 +76,6 @@ const Board: React.FC<BoardProps> = (props) => {
   );
 };
 
-type KeyProps = {
-  value: string;
-  onClick: (c: string) => void;
-};
-const Key: React.FC<KeyProps> = (props) => {
-  return (
-    <button
-      className="flex flex-1 items-center justify-center bg-slate-300 rounded-md p-4 m-0.5"
-      onClick={() => props.onClick(props.value)}
-    >
-      <span className="text-xl">{props.value}</span>
-    </button>
-  );
-};
-
-const row1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
-const row2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
-const row3 = ["enter", "z", "x", "c", "v", "b", "n", "m", "⌫"];
-
-type KeyboardProps = {
-  onKeyPress: (value: string) => void;
-};
-const Keyboard: React.FC<KeyboardProps> = (props) => {
-  const keyClick = (value: string) => {
-    props.onKeyPress(value);
-  };
-
-  const mapToKey = (e: string) => <Key key={e} value={e} onClick={keyClick} />;
-
-  return (
-    <div className="flex flex-col">
-      <div className="flex">{row1.map(mapToKey)}</div>
-      <div className="flex mx-6">{row2.map(mapToKey)}</div>
-      <div className="flex">{row3.map(mapToKey)}</div>
-    </div>
-  );
-};
-
 type GameProps = {
   answer: string;
 };
@@ -124,7 +87,6 @@ const useGame = ({ answer }: GameProps) => {
 
   const submit = () => {
     if (activeRow.length !== answer.length) {
-      console.log("letter count mismatch");
       return;
     }
 
@@ -191,6 +153,7 @@ const useGame = ({ answer }: GameProps) => {
         submit();
         break;
       case "⌫":
+      case "backspace":
         backSpace();
         break;
       default:
@@ -206,7 +169,6 @@ type DoneModal = {
   onShare: () => void;
   onDismiss: () => void;
 };
-
 const DoneModal: React.FC<DoneModal> = (props) => {
   const [timeRemaining, setTimeRemaining] = React.useState<string>("");
 
@@ -235,7 +197,6 @@ const DoneModal: React.FC<DoneModal> = (props) => {
     let timeout: NodeJS.Timeout;
     const callback = () => {
       setTimeRemaining(printTimeRemaining());
-
       timeout = setTimeout(() => callback(), 1000);
     };
 
@@ -297,7 +258,7 @@ const Tortle: NextPage = () => {
   }, [done]);
 
   return (
-    <div className="flex flex-col p-4 m-auto max-w-lg min-h-screen items-center justify-between">
+    <div className="flex flex-col m-auto max-w-lg min-h-screen items-center justify-between">
       <Head>
         <title>{ANSWER} - a daily word thing</title>
       </Head>
