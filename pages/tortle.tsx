@@ -1,0 +1,290 @@
+import type { NextPage } from "next";
+import Head from "next/head";
+import React from "react";
+
+const enum LetterState {
+  UNKNOWN,
+  INVALID,
+  MISPLACE,
+  CORRECT,
+}
+
+type TileProps = {
+  value: string;
+  state: LetterState;
+};
+const Tile: React.FC<TileProps> = (props) => {
+  const color =
+    props.state === LetterState.CORRECT
+      ? "bg-green-400"
+      : props.state === LetterState.INVALID
+      ? "bg-slate-400"
+      : props.state === LetterState.MISPLACE
+      ? "bg-yellow-400"
+      : "";
+
+  return (
+    <div
+      className={`flex items-center justify-center border-2 w-16 h-16 m-0.5 ${color}`}
+    >
+      <span className="text-2xl">{props.value}</span>
+    </div>
+  );
+};
+
+type AnswerTile = {
+  value: string;
+  state: LetterState;
+};
+
+type BoardProps = {
+  size: number;
+  board: AnswerTile[][];
+  activeRow: string[];
+};
+const Board: React.FC<BoardProps> = (props) => {
+  return (
+    <div className="flex flex-col my-4">
+      {props.board.map((row, i) => (
+        <div key={`${row.join()}${i}`} className="flex">
+          {row.map((tile, i) => (
+            <Tile
+              key={`${tile.value}${i}`}
+              value={tile.value}
+              state={tile.state}
+            />
+          ))}
+        </div>
+      ))}
+      <div className="flex">
+        {Array(props.size)
+          .fill("")
+          .map((tile, i) => (
+            <Tile
+              key={`active-${tile.value}${i}`}
+              value={props.activeRow[i]}
+              state={tile}
+            />
+          ))}
+      </div>
+    </div>
+  );
+};
+
+type KeyProps = {
+  value: string;
+  onClick: (c: string) => void;
+};
+const Key: React.FC<KeyProps> = (props) => {
+  return (
+    <button
+      className="flex flex-1 items-center justify-center bg-slate-300 rounded-md p-4 m-0.5"
+      onClick={() => props.onClick(props.value)}
+    >
+      <span className="text-xl">{props.value}</span>
+    </button>
+  );
+};
+
+const row1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
+const row2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
+const row3 = ["enter", "z", "x", "c", "v", "b", "n", "m", "⌫"];
+
+type KeyboardProps = {
+  onKeyPress: (value: string) => void;
+};
+const Keyboard: React.FC<KeyboardProps> = (props) => {
+  const keyClick = (value: string) => {
+    props.onKeyPress(value);
+  };
+
+  const mapToKey = (e: string) => <Key key={e} value={e} onClick={keyClick} />;
+
+  return (
+    <div className="flex flex-col">
+      <div className="flex">{row1.map(mapToKey)}</div>
+      <div className="flex mx-6">{row2.map(mapToKey)}</div>
+      <div className="flex">{row3.map(mapToKey)}</div>
+    </div>
+  );
+};
+
+type GameProps = {
+  answer: string;
+  onDone: (success: boolean) => void;
+};
+const useGame = ({ answer, onDone }: GameProps) => {
+  const [board, setBoard] = React.useState<AnswerTile[][]>([]);
+  const [activeRow, setActiveRow] = React.useState<string[]>([]);
+
+  const submit = () => {
+    if (activeRow.length !== answer.length) {
+      console.log("letter count mismatch");
+      return;
+    }
+
+    let result = activeRow.map((value, index) => {
+      const state =
+        answer[index] === value
+          ? LetterState.CORRECT
+          : answer.includes(value)
+          ? LetterState.MISPLACE
+          : LetterState.INVALID;
+
+      return { value, state };
+    });
+
+    const correctKeys = result.filter((t) => t.state === LetterState.CORRECT);
+
+    result = result.map((t, i, arr) => {
+      if (
+        t.state === LetterState.MISPLACE &&
+        correctKeys.find((correctTile) => t.value === correctTile.value)
+      ) {
+        return { ...t, state: LetterState.INVALID };
+      }
+
+      if (
+        arr
+          .slice(0, i)
+          .some(
+            (previous) =>
+              t.value === previous.value && t.state !== LetterState.CORRECT
+          )
+      ) {
+        return { ...t, state: LetterState.INVALID };
+      }
+
+      return t;
+    });
+
+    if (result.every((t) => t.state === LetterState.CORRECT)) {
+      onDone(true);
+    } else {
+      setBoard((board) => [...board, result]);
+      setActiveRow([]);
+    }
+  };
+
+  const backSpace = () => {
+    setActiveRow((b) => b.slice(0, -1));
+  };
+
+  const add = (c: string) => {
+    if (activeRow.length === answer.length) {
+      return;
+    }
+
+    setActiveRow((b) => [...b, c]);
+  };
+
+  const onKey = (value: string) => {
+    switch (value) {
+      case "enter":
+        submit();
+        break;
+      case "⌫":
+        backSpace();
+        break;
+      default:
+        add(value);
+    }
+  };
+
+  return { board, activeRow, onKey };
+};
+
+type DoneModal = {
+  visible: boolean;
+  onDismiss: () => void;
+};
+
+const DoneModal: React.FC<DoneModal> = (props) => {
+  const [timeRemaining, setTimeRemaining] = React.useState<string>("");
+  React.useEffect(() => {
+    document.addEventListener("click", props.onDismiss, true);
+    return () => {
+      document.removeEventListener("click", props.onDismiss, true);
+    };
+  }, [props.onDismiss]);
+
+  const printTimeRemaining = (): string => {
+    const now = new Date();
+    const hours = 24 - now.getHours() - 1;
+    const minutes = 60 - now.getMinutes() - 1;
+    const seconds = 60 - now.getSeconds();
+
+    const padStart = (n: number) => n.toString().padStart(2, "0");
+    return [hours, minutes, seconds].map(padStart).join(":");
+  };
+
+  React.useEffect(() => {
+    if (!props.visible) {
+      return;
+    }
+
+    let timeout: NodeJS.Timeout;
+    const callback = () => {
+      setTimeRemaining(printTimeRemaining());
+
+      timeout = setTimeout(() => callback(), 1000);
+    };
+
+    callback();
+
+    return () => clearTimeout(timeout);
+  }, [props.visible]);
+
+  return (
+    <div className={`${props.visible ? "block" : "hidden"} fixed`}>
+      <div className="fixed z-10 flex items-center justify-center inset-0 bg-gray-700 bg-opacity-50 h-screen w-screen">
+        <div className="flex flex-col min-w-[35%] p-4 shadow-xl rounded-lg bg-white">
+          <div className="flex flex-col m-2 p-2 border-b text-center">
+            <h2 className="text-xl font-bold">next tortle</h2>
+            <p className="text-3xl p-2 tabular-nums">{timeRemaining}</p>
+          </div>
+          <button
+            className="bg-sky-100 rounded-lg py-2 px-8 my-2 mx-auto"
+            onClick={props.onDismiss}
+          >
+            share
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ANSWER = "tortle";
+
+const Tortle: NextPage = () => {
+  const [doneVisible, setDoneVisible] = React.useState(false);
+
+  const onDone = () => {
+    setDoneVisible(true);
+  };
+
+  const { board, activeRow, onKey } = useGame({
+    answer: ANSWER,
+    onDone: onDone,
+  });
+
+  return (
+    <div className="flex flex-col p-4 m-auto max-w-lg min-h-screen items-center justify-between">
+      <Head>
+        <title>{ANSWER} - a daily word thing</title>
+      </Head>
+      <h1 className="text-6xl font-bold border-b pb-2">{ANSWER}</h1>
+
+      <Board size={ANSWER.length} board={board} activeRow={activeRow} />
+      <Keyboard onKeyPress={onKey} />
+
+      <DoneModal
+        visible={doneVisible}
+        onDismiss={() => setDoneVisible(false)}
+      />
+    </div>
+  );
+};
+
+export default Tortle;
