@@ -237,6 +237,7 @@ const ANSWER = "tortle";
 
 const Tortle: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
+  const keyboardRef = React.useRef<HTMLDivElement>(null);
 
   const { board, activeRow, done, winner, onKey } = useGame({
     answer: ANSWER,
@@ -267,6 +268,10 @@ const Tortle: NextPage = () => {
     }
   }, [done]);
 
+  React.useEffect(() => {
+    keyboardRef.current?.scrollIntoView();
+  }, []);
+
   return (
     <div className="flex flex-col m-auto py-3 px-3 max-w-lg min-h-screen items-center justify-between">
       <Head>
@@ -287,7 +292,8 @@ const Tortle: NextPage = () => {
         board={board}
         activeRow={activeRow}
       />
-      <Keyboard onKeyPress={onKey} />
+
+      <Keyboard ref={keyboardRef} onKeyPress={onKey} />
 
       <DoneModal
         visible={doneVisible}

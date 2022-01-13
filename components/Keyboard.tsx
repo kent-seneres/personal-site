@@ -30,31 +30,36 @@ type KeyboardProps = {
   onKeyPress: (value: string) => void;
 };
 
-const Keyboard: React.FC<KeyboardProps> = (props) => {
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (/^[a-zA-Z]$|\b(Enter|Backspace)\b/.test(e.key)) {
-      props.onKeyPress(e.key.toLowerCase());
-    }
-  };
-
-  React.useEffect(() => {
-    document.addEventListener("keydown", onKeyDown, true);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown, true);
+const Keyboard = React.forwardRef<HTMLDivElement, KeyboardProps>(
+  (props, ref) => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (/^[a-zA-Z]$|\b(Enter|Backspace)\b/.test(e.key)) {
+        props.onKeyPress(e.key.toLowerCase());
+      }
     };
-  }, [props.onKeyPress]);
 
-  const mapToKey = (k: string) => (
-    <Key key={k} value={k} onClick={props.onKeyPress} />
-  );
+    React.useEffect(() => {
+      document.addEventListener("keydown", onKeyDown, true);
+      return () => {
+        document.removeEventListener("keydown", onKeyDown, true);
+      };
+    }, [props.onKeyPress]);
 
-  return (
-    <div className="flex flex-col self-stretch items-stretch align-items-center">
-      <div className="flex">{ROW_1.map(mapToKey)}</div>
-      <div className="flex mx-6">{ROW_2.map(mapToKey)}</div>
-      <div className="flex">{ROW_3.map(mapToKey)}</div>
-    </div>
-  );
-};
+    const mapToKey = (k: string) => (
+      <Key key={k} value={k} onClick={props.onKeyPress} />
+    );
+
+    return (
+      <div
+        ref={ref}
+        className="flex flex-col self-stretch items-stretch align-items-center"
+      >
+        <div className="flex">{ROW_1.map(mapToKey)}</div>
+        <div className="flex mx-6">{ROW_2.map(mapToKey)}</div>
+        <div className="flex">{ROW_3.map(mapToKey)}</div>
+      </div>
+    );
+  }
+);
 
 export default Keyboard;
