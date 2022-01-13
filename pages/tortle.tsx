@@ -14,21 +14,22 @@ type TileProps = {
   value: string;
   state: LetterState;
 };
+
 const Tile: React.FC<TileProps> = (props) => {
   const color =
     props.state === LetterState.CORRECT
-      ? "bg-green-400"
+      ? "bg-green-500"
       : props.state === LetterState.INVALID
-      ? "bg-slate-400"
+      ? "bg-slate-600"
       : props.state === LetterState.MISPLACE
-      ? "bg-yellow-400"
-      : "";
+      ? "bg-yellow-500"
+      : "bg-slate-900";
 
   return (
     <div
-      className={`flex items-center justify-center border-2 w-16 h-16 m-0.5 ${color}`}
+      className={`flex items-center justify-center border-2 border-slate-400 w-16 h-16 m-0.5 ${color}`}
     >
-      <span className="text-2xl">{props.value}</span>
+      <span className="text-2xl font-bold text-slate-50">{props.value}</span>
     </div>
   );
 };
@@ -219,7 +220,7 @@ const DoneModal: React.FC<DoneModal> = (props) => {
             <p className="text-3xl p-2 tabular-nums">{timeRemaining}</p>
           </div>
           <button
-            className="bg-sky-100 rounded-lg py-2 px-8 my-2 mx-auto"
+            className="bg-green-500 text-slate-50 text-lg rounded-lg py-2 px-8 my-2 mx-auto"
             onClick={props.onShare}
           >
             share

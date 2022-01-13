@@ -8,10 +8,14 @@ type KeyProps = {
 const Key: React.FC<KeyProps> = (props) => {
   return (
     <button
-      className="flex flex-1 items-center justify-center bg-slate-300 rounded-md m-0.5"
+      className="flex flex-1 items-center justify-center bg-slate-400 rounded-lg m-0.5"
       onClick={() => props.onClick(props.value)}
     >
-      <span className={`text-xl py-2 ${props.value.length > 0 ? "px-2" : ""}`}>
+      <span
+        className={`text-xl text-slate-50 py-2 ${
+          props.value.length > 0 ? "px-2" : ""
+        }`}
+      >
         {props.value}
       </span>
     </button>
