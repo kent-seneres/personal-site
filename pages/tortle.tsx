@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import Keyboard from "@components/Keyboard";
+import Link from "next/link";
 
 const enum LetterState {
   UNKNOWN,
@@ -271,7 +272,14 @@ const Tortle: NextPage = () => {
       <Head>
         <title>{ANSWER} - a daily word thing</title>
       </Head>
-      <h1 className="text-6xl font-bold border-b p-2">{ANSWER}</h1>
+      <div className="grid grid-cols-3 self-stretch border-b p-2">
+        <div className="flex items-center">
+          <Link href={{ pathname: "/" }}>
+            <a className="p-4 text-2xl">🐢</a>
+          </Link>
+        </div>
+        <h1 className="text-6xl font-bold">{ANSWER}</h1>
+      </div>
 
       <Board
         size={ANSWER.length}
