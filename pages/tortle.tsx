@@ -267,11 +267,11 @@ const Tortle: NextPage = () => {
   }, [done]);
 
   return (
-    <div className="flex flex-col m-auto py-2 max-w-lg min-h-screen items-center justify-between">
+    <div className="flex flex-col m-auto py-3 px-3 max-w-lg min-h-screen items-center justify-between">
       <Head>
         <title>{ANSWER} - a daily word thing</title>
       </Head>
-      <h1 className="text-6xl font-bold border-b p-2 m-4">{ANSWER}</h1>
+      <h1 className="text-6xl font-bold border-b p-2">{ANSWER}</h1>
 
       <Board
         size={ANSWER.length}
