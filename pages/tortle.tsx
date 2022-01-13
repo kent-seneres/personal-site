@@ -270,10 +270,10 @@ const Tortle: NextPage = () => {
 
   React.useEffect(() => {
     keyboardRef.current?.scrollIntoView();
-  }, []);
+  }, [board]);
 
   return (
-    <div className="flex flex-col m-auto py-3 px-3 max-w-lg min-h-screen items-center justify-between">
+    <div className="absolute inset-0 flex flex-col m-auto p-4 max-w-lg items-center justify-between">
       <Head>
         <title>{ANSWER} - a daily word thing</title>
       </Head>
