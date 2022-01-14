@@ -20,6 +20,10 @@ const Tortle: NextPage = () => {
     limit: 1,
   });
 
+  const message = winner
+    ? "🐢 you got it 🐢"
+    : "you did not get it\ntry again tomorrow";
+
   const share = () => {
     const results = board[board.length - 1]
       .map((t) => {
@@ -73,6 +77,7 @@ const Tortle: NextPage = () => {
 
       <DoneModal
         visible={doneVisible}
+        message={message}
         onShare={() => share()}
         onDismiss={() => setDoneVisible(false)}
       />

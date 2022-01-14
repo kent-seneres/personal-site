@@ -2,6 +2,7 @@ import React from "react";
 
 type DoneModal = {
   visible: boolean;
+  message: string;
   onShare: () => void;
   onDismiss: () => void;
 };
@@ -9,6 +10,8 @@ type DoneModal = {
 const DoneModal: React.FC<DoneModal> = (props) => {
   const [timeRemaining, setTimeRemaining] = React.useState<string>("");
   const ref = React.useRef<HTMLDivElement>(null);
+
+  const [showCopy, setShowCopy] = React.useState(false);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -49,23 +52,35 @@ const DoneModal: React.FC<DoneModal> = (props) => {
     return () => clearTimeout(timeout);
   }, [props.visible]);
 
+  const onShare = () => {
+    setShowCopy(true);
+    setTimeout(() => setShowCopy(false), 2500);
+
+    props.onShare();
+  };
+
   return (
     <div className={`${props.visible ? "block" : "hidden"} fixed`}>
       <div className="fixed z-10 flex flex-col items-center justify-center inset-0 bg-gray-700 bg-opacity-50 h-screen w-screen">
-        <div className="flex flex-col p-4 shadow-xl rounded-lg bg-white m-2">
+        <div
+          className={`${
+            showCopy ? "opacity-100" : "opacity-0"
+          } transition-opacity duration-300  p-4 shadow-xl rounded-lg bg-white m-2`}
+        >
           <p className="font-bold">Copied results to clipboard</p>
         </div>
         <div
           ref={ref}
-          className="flex flex-col p-4 shadow-xl rounded-lg bg-white"
+          className="flex flex-col p-8 shadow-xl rounded-lg bg-white"
         >
-          <div className="flex flex-col m-2 p-2 border-b text-center">
+          <div className="flex flex-col border-b text-center">
+            <p className="pb-8 whitespace-pre-line">{props.message}</p>
             <h2 className="text-xl font-bold">next tortle</h2>
-            <p className="text-3xl p-2 tabular-nums">{timeRemaining}</p>
+            <p className="text-3xl p-4 tabular-nums">{timeRemaining}</p>
           </div>
           <button
-            className="bg-green-500 text-slate-50 text-lg rounded-lg py-2 px-8 my-2 mx-auto"
-            onClick={props.onShare}
+            className="bg-green-500 text-slate-50 text-lg rounded-lg py-2 px-10 mt-8 mx-auto"
+            onClick={onShare}
           >
             share
           </button>
