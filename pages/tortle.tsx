@@ -21,6 +21,10 @@ const Tortle: NextPage = () => {
     : "you did not get it\ntry again tomorrow";
 
   const share = () => {
+    const darkMode =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+
     const results = board[board.length - 1]
       .map((t) => {
         switch (t.state) {
@@ -29,7 +33,7 @@ const Tortle: NextPage = () => {
           case LetterState.MISPLACE:
             return "🟨";
           default:
-            return "⬜";
+            return darkMode ? "⬛️" : "⬜";
         }
       })
       .join(" ");
