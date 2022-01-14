@@ -24,7 +24,7 @@ const DoneModal: React.FC<DoneModal> = (props) => {
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [props.onDismiss]);
+  }, [props]);
 
   React.useEffect(() => {
     if (!props.visible) {
