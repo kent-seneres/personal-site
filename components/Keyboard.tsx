@@ -8,7 +8,7 @@ type KeyProps = {
 const Key: React.FC<KeyProps> = (props) => {
   return (
     <button
-      className="flex flex-1 h-12 items-center justify-center bg-slate-400 rounded-md m-0.5"
+      className="flex flex-1 h-12 items-center justify-center bg-slate-500 rounded-md m-0.5"
       onClick={() => props.onClick(props.value)}
     >
       <span
