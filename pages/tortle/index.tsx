@@ -63,7 +63,7 @@ const Tortle: NextPage = () => {
             <a className="p-2 text-2xl">🐢</a>
           </Link>
         </div>
-        <h1 className="text-5xl font-bold">{ANSWER}</h1>
+        <h1 className="text-5xl font-bold text-slate-900">{ANSWER}</h1>
       </div>
 
       <Board

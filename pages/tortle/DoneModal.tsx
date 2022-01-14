@@ -79,7 +79,7 @@ const DoneModal: React.FC<DoneModal> = (props) => {
             <p className="text-3xl p-4 tabular-nums">{timeRemaining}</p>
           </div>
           <button
-            className="bg-green-500 text-slate-50 text-lg rounded-lg py-2 px-10 mt-8 mx-auto"
+            className="bg-green-600 text-slate-50 text-lg rounded-lg py-2 px-10 mt-8 mx-auto"
             onClick={onShare}
           >
             share
