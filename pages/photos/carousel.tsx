@@ -1,4 +1,5 @@
 import { GetStaticProps, NextPage } from "next/types";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
@@ -9,54 +10,6 @@ import {
   FiArrowLeftCircle,
   FiArrowRightCircle,
 } from "react-icons/fi";
-
-type SelectedPhotoProps = {
-  photo: Photo;
-  next: () => void;
-  previous: () => void;
-  dismiss: () => void;
-};
-
-const SelectedPhoto: React.FC<SelectedPhotoProps> = (props) => {
-  const { photo } = props;
-
-  return (
-    <div className="fixed z-10 inset-0 h-screen w-screen bg-black">
-      <div className="fixed w-screen inset-16 -ml-16 ">
-        <Image
-          src={photo.path}
-          alt={photo.name}
-          layout="fill"
-          objectFit="contain"
-          title={photo.description ?? undefined}
-        />
-      </div>
-      <button
-        className="absolute left-full pl-8 -ml-24 w-24 h-24 opacity-50 hover:opacity-90"
-        onClick={props.dismiss}
-      >
-        <FiXCircle color="white" className="h-8 w-8" />
-      </button>
-      <div className="absolute top-[50vh] -mt-[25vh] h-[50vh] w-screen ">
-        <button
-          className="absolute left-0 pl-8 h-full w-24 md:w-48 opacity-0 md:hover:opacity-90"
-          onClick={props.previous}
-        >
-          <FiArrowLeftCircle color="white" className="h-8 w-8" />
-        </button>
-        <button
-          className="absolute left-full -ml-24 h-full w-24 md:w-48 md:-ml-48 pl-8 md:pl-32 opacity-0 md:hover:opacity-90"
-          onClick={props.next}
-        >
-          <FiArrowRightCircle color="white" className="h-8 w-8" />
-        </button>
-      </div>
-      <p className="fixed text-white w-full top-full -mt-16 h-16 p-4 text-center">
-        {photo.description}
-      </p>
-    </div>
-  );
-};
 
 type CarouselProps = {
   photos: Photo[];
@@ -76,13 +29,45 @@ const Carousel: NextPage<CarouselProps> = (props) => {
     });
   };
 
+  const photo = props.photos[selectedPhoto];
+  const dismiss = () => router.back();
+  const next = () => changeSelectedPhoto(1);
+  const previous = () => changeSelectedPhoto(-1);
+
   return (
-    <SelectedPhoto
-      photo={props.photos[selectedPhoto]}
-      dismiss={() => router.back()}
-      next={() => changeSelectedPhoto(1)}
-      previous={() => changeSelectedPhoto(-1)}
-    />
+    <div className="fixed flex justify-center h-full w-full bg-black">
+      <Head>
+        <title>{pageTitle}</title>
+      </Head>
+      <div className="fixed w-screen inset-16 -ml-16 ">
+        <Image
+          src={photo.path}
+          alt={photo.name}
+          layout="fill"
+          objectFit="contain"
+          title={photo.description ?? undefined}
+        />
+      </div>
+      <div className="fixed top-0 h-16 w-screen max-w-4xl">
+        <button
+          className="absolute left-full -ml-16 h-16 opacity-50 hover:opacity-90"
+          onClick={dismiss}
+        >
+          <FiXCircle color="white" className="h-16 w-16 p-4" />
+        </button>
+      </div>
+      <div className="absolute top-full -mt-16 h-16 w-screen max-w-4xl overflow-hidden">
+        <div className="flex justify-between items-center h-full">
+          <button className="opacity-50 hover:opacity-100" onClick={previous}>
+            <FiArrowLeftCircle color="white" className="h-16 w-16 p-4" />
+          </button>
+          <p className="text-white text-center">{photo.description}</p>
+          <button className="opacity-50 hover:opacity-100" onClick={next}>
+            <FiArrowRightCircle color="white" className="h-16 w-16 p-4" />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
