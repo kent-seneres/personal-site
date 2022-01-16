@@ -1,10 +1,11 @@
-import { NextPage } from "next/types";
+import { GetStaticProps, NextPage } from "next/types";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import globals from "@lib/globals";
+import { getMetadataFile } from "@lib/api";
 import { Photo } from "@lib/types";
 import {
   FiXCircle,
@@ -12,19 +13,23 @@ import {
   FiArrowRightCircle,
 } from "react-icons/fi";
 
-/**
- * File populated as part of photos page static build.
- * See `lib/api/getPhotos`
- */
-import photos from "public/.drive-images-metadata.json";
-
-type CarouselProps = {};
+type CarouselProps = {
+  metadataFile: string;
+};
 
 const Carousel: NextPage<CarouselProps> = (props) => {
   const pageTitle = `Photos - ${globals.name}`;
 
+  const [photos, setPhotos] = React.useState<Photo[]>([]);
   const [selectedPhoto, setSelectedPhoto] = React.useState<number>(0);
   const router = useRouter();
+
+  React.useEffect(() => {
+    fetch(props.metadataFile)
+      .then((response) => response.json())
+      .then((data) => setPhotos(data))
+      .catch((e) => console.log(e));
+  }, [props.metadataFile]);
 
   React.useEffect(() => {
     let match = router.asPath.match(/#([0-9]+)/);
@@ -34,11 +39,12 @@ const Carousel: NextPage<CarouselProps> = (props) => {
         setSelectedPhoto(id);
       }
     }
-  }, [router.asPath]);
+  }, [photos, router.asPath]);
 
   const photo: Photo = photos[selectedPhoto];
-  const previous = Math.max(0, selectedPhoto - 1);
-  const next = Math.min(selectedPhoto + 1, photos.length - 1);
+  const previous = selectedPhoto > 0 ? selectedPhoto - 1 : 0;
+  const next =
+    selectedPhoto < photos.length - 1 ? selectedPhoto + 1 : selectedPhoto;
 
   const dismiss = () => router.back();
 
@@ -87,6 +93,11 @@ const Carousel: NextPage<CarouselProps> = (props) => {
       </div>
     </div>
   );
+};
+
+export const getStaticProps: GetStaticProps<CarouselProps> = async () => {
+  const metadataFile = getMetadataFile();
+  return { props: { metadataFile } };
 };
 
 export default Carousel;

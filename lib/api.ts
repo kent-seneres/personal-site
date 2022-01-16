@@ -9,7 +9,7 @@ const ROOT_PUBLIC_PATH = "public";
 const DRIVE_IMAGE_PATH = path.join(ROOT_PUBLIC_PATH, "images", "drive");
 const IMAGE_METADATA_FILE = path.join(
   ROOT_PUBLIC_PATH,
-  ".drive-images-metadata.json"
+  "drive-images-metadata.json"
 );
 
 const getDriveApi = (scopes: string | string[]) => {
@@ -90,4 +90,11 @@ export const getPhotos = async (): Promise<Photo[]> => {
   fs.writeFileSync(IMAGE_METADATA_FILE, data);
 
   return photos;
+};
+
+/**
+ * File will be populated as part of `getPhotos` call
+ */
+export const getMetadataFile = () => {
+  return IMAGE_METADATA_FILE.replace(ROOT_PUBLIC_PATH, "");
 };
