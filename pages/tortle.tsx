@@ -36,7 +36,7 @@ const Tortle: NextPage = () => {
             return darkMode ? "⬛️" : "⬜";
         }
       })
-      .join(" ");
+      .join("");
 
     const title = winner ? `🐢 ${ANSWER} 🐢` : ANSWER;
     navigator.clipboard.writeText(`${title}\n\n${results}`);
