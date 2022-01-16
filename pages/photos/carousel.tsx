@@ -22,7 +22,7 @@ const SelectedPhoto: React.FC<SelectedPhotoProps> = (props) => {
 
   return (
     <div className="fixed z-10 inset-0 h-screen w-screen bg-black">
-      <div className="fixed w-screen inset-10 -ml-10 ">
+      <div className="fixed w-screen inset-16 -ml-16 ">
         <Image
           src={photo.path}
           alt={photo.name}
@@ -31,7 +31,6 @@ const SelectedPhoto: React.FC<SelectedPhotoProps> = (props) => {
           title={photo.description ?? undefined}
         />
       </div>
-
       <button
         className="absolute left-full pl-8 -ml-24 w-24 h-24 opacity-50 hover:opacity-90"
         onClick={props.dismiss}
@@ -52,7 +51,7 @@ const SelectedPhoto: React.FC<SelectedPhotoProps> = (props) => {
           <FiArrowRightCircle color="white" className="h-8 w-8" />
         </button>
       </div>
-      <p className="fixed text-white w-full top-full -mt-10 h-10 p-2 text-center">
+      <p className="fixed text-white w-full top-full -mt-16 h-16 p-4 text-center">
         {photo.description}
       </p>
     </div>
