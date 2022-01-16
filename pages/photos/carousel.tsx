@@ -21,7 +21,7 @@ const Carousel: NextPage<CarouselProps> = (props) => {
   const pageTitle = `Photos - ${globals.name}`;
 
   const [photos, setPhotos] = React.useState<Photo[]>([]);
-  const [selectedPhoto, setSelectedPhoto] = React.useState<number>(0);
+  const [selectedPhoto, setSelectedPhoto] = React.useState<number>(-1);
   const router = useRouter();
 
   React.useEffect(() => {
@@ -41,7 +41,7 @@ const Carousel: NextPage<CarouselProps> = (props) => {
     }
   }, [photos, router.asPath]);
 
-  const photo: Photo = photos[selectedPhoto];
+  const photo: Photo | undefined = photos[selectedPhoto];
   const previous = selectedPhoto > 0 ? selectedPhoto - 1 : 0;
   const next =
     selectedPhoto < photos.length - 1 ? selectedPhoto + 1 : selectedPhoto;
