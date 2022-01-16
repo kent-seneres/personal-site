@@ -22,13 +22,7 @@ const Photos: NextPage<PhotosProps> = (props) => {
         <div className={`flex flex-row flex-wrap`}>
           {props.photos.map((photo, index) => {
             return (
-              <Link
-                key={index}
-                href={{
-                  pathname: "/photos/carousel",
-                  query: { index: index },
-                }}
-              >
+              <Link key={index} href={`/photos/carousel#${index}`}>
                 <a className={"p-0.5 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-auto"}>
                   <Image
                     src={photo.path}
