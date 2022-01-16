@@ -23,15 +23,13 @@ const Photos: NextPage<PhotosProps> = (props) => {
           {props.photos.map((photo, index) => {
             return (
               <Link
+                key={index}
                 href={{
                   pathname: "/photos/carousel",
                   query: { index: index },
                 }}
               >
-                <button
-                  key={index}
-                  className={"p-0.5 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-auto"}
-                >
+                <a className={"p-0.5 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-auto"}>
                   <Image
                     src={photo.path}
                     alt={photo.name}
@@ -43,7 +41,7 @@ const Photos: NextPage<PhotosProps> = (props) => {
                     blurDataURL={photo.blurDataURL}
                     title={photo.description ?? undefined}
                   />
-                </button>
+                </a>
               </Link>
             );
           })}
