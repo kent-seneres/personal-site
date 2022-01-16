@@ -40,13 +40,13 @@ const SelectedPhoto: React.FC<SelectedPhotoProps> = (props) => {
       </button>
       <div className="absolute top-[50vh] -mt-[25vh] h-[50vh] w-screen ">
         <button
-          className="absolute left-0 pl-8 h-full w-24 md:w-48 opacity-0 hover-hover:opacity-90"
+          className="absolute left-0 pl-8 h-full w-24 md:w-48 opacity-0 md:hover:opacity-90"
           onClick={props.previous}
         >
           <FiArrowLeftCircle color="white" className="h-8 w-8" />
         </button>
         <button
-          className="absolute left-full -ml-24 h-full w-24 md:w-48 md:-ml-48 pl-8 md:pl-32 opacity-0 hover-hover:opacity-90"
+          className="absolute left-full -ml-24 h-full w-24 md:w-48 md:-ml-48 pl-8 md:pl-32 opacity-0 md:hover:opacity-90"
           onClick={props.next}
         >
           <FiArrowRightCircle color="white" className="h-8 w-8" />
