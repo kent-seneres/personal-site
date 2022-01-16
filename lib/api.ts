@@ -3,19 +3,14 @@ import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
 import { getPlaiceholder } from "plaiceholder";
+import { Photo } from "./types";
 
-export type Photo = {
-  path: string;
-  blurDataURL: string;
-  id: string;
-  name: string;
-  modifiedTime: string;
-  imageMediaMetadata: {
-    height: number;
-    width: number;
-  };
-  description: string | null;
-};
+const ROOT_PUBLIC_PATH = "public";
+const DRIVE_IMAGE_PATH = path.join(ROOT_PUBLIC_PATH, "images", "drive");
+const IMAGE_METADATA_FILE = path.join(
+  ROOT_PUBLIC_PATH,
+  "drive-images-metadata.json"
+);
 
 const getDriveApi = (scopes: string | string[]) => {
   const jwt = new auth.JWT({
@@ -26,9 +21,6 @@ const getDriveApi = (scopes: string | string[]) => {
 
   return drive({ version: "v3", auth: jwt });
 };
-
-const ROOT_PUBLIC_PATH = "public";
-const DRIVE_IMAGE_PATH = path.join(ROOT_PUBLIC_PATH, "images", "drive");
 
 const getImageFilePath = (fileName: string): string => {
   return path.join(DRIVE_IMAGE_PATH, fileName);
@@ -83,8 +75,8 @@ export const getPhotos = async (): Promise<Photo[]> => {
         name: file.name!,
         modifiedTime: file.modifiedTime!,
         imageMediaMetadata: {
-          height: file.imageMediaMetadata?.height!,
-          width: file.imageMediaMetadata?.width!,
+          height: file.imageMediaMetadata!.height!,
+          width: file.imageMediaMetadata!.width!,
         },
         description: file.description ?? null,
       });
@@ -93,5 +85,16 @@ export const getPhotos = async (): Promise<Photo[]> => {
     console.log(err);
   }
 
+  // cache photo metadata into filesystem for reuse
+  const data = JSON.stringify(photos);
+  fs.writeFileSync(IMAGE_METADATA_FILE, data);
+
   return photos;
+};
+
+/**
+ * File will be populated as part of `getPhotos` call
+ */
+export const getMetadataFile = () => {
+  return IMAGE_METADATA_FILE.replace(ROOT_PUBLIC_PATH, "");
 };
