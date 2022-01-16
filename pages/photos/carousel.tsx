@@ -1,20 +1,24 @@
-import { GetStaticProps, NextPage } from "next/types";
+import { NextPage } from "next/types";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import globals from "@lib/globals";
-import { getPhotos, Photo } from "@lib/api";
+import { Photo } from "@lib/types";
 import {
   FiXCircle,
   FiArrowLeftCircle,
   FiArrowRightCircle,
 } from "react-icons/fi";
 
-type CarouselProps = {
-  photos: Photo[];
-};
+/**
+ * File populated as part of photos page static build.
+ * See `lib/api/getPhotos`
+ */
+import photos from "public/.drive-images-metadata.json";
+
+type CarouselProps = {};
 
 const Carousel: NextPage<CarouselProps> = (props) => {
   const pageTitle = `Photos - ${globals.name}`;
@@ -26,17 +30,17 @@ const Carousel: NextPage<CarouselProps> = (props) => {
     let match = router.asPath.match(/#([0-9]+)/);
     if (match) {
       const id = parseInt(match[1]);
-      if (id > 0 && id < props.photos.length) {
+      if (id >= 0 && id < photos.length) {
         setSelectedPhoto(id);
       }
     }
   }, [router.asPath]);
 
-  const dismiss = () => router.back();
-
-  const photo = props.photos[selectedPhoto];
+  const photo: Photo = photos[selectedPhoto];
   const previous = Math.max(0, selectedPhoto - 1);
-  const next = Math.min(selectedPhoto + 1, props.photos.length - 1);
+  const next = Math.min(selectedPhoto + 1, photos.length - 1);
+
+  const dismiss = () => router.back();
 
   return (
     <div className="fixed flex justify-center h-full w-full bg-black">
@@ -44,13 +48,17 @@ const Carousel: NextPage<CarouselProps> = (props) => {
         <title>{pageTitle}</title>
       </Head>
       <div className="fixed w-screen inset-16 -ml-16 ">
-        <Image
-          src={photo.path}
-          alt={photo.name}
-          layout="fill"
-          objectFit="contain"
-          title={photo.description ?? undefined}
-        />
+        {photo && (
+          <Image
+            src={photo.path}
+            alt={photo.name}
+            layout="fill"
+            objectFit="contain"
+            title={photo.description ?? undefined}
+            placeholder="blur"
+            blurDataURL={photo.blurDataURL}
+          />
+        )}
       </div>
       <div className="fixed top-0 h-16 w-screen max-w-4xl">
         <button
@@ -62,15 +70,15 @@ const Carousel: NextPage<CarouselProps> = (props) => {
       </div>
       <div className="absolute top-full -mt-16 h-16 w-screen max-w-4xl overflow-hidden">
         <div className="flex justify-between items-center h-full">
-          <Link href={`#${previous}`} replace={true}>
+          <Link href={`#${previous}`} replace={true} passHref={true}>
             <button className="opacity-50 hover:opacity-100">
               <FiArrowLeftCircle color="white" className="h-16 w-16 p-4" />
             </button>
           </Link>
 
-          <p className="text-white text-center">{photo.description}</p>
+          <p className="text-white text-center">{photo?.description}</p>
 
-          <Link href={`#${next}`} replace={true}>
+          <Link href={`#${next}`} replace={true} passHref={true}>
             <button className="opacity-50 hover:opacity-100">
               <FiArrowRightCircle color="white" className="h-16 w-16 p-4" />
             </button>
@@ -79,11 +87,6 @@ const Carousel: NextPage<CarouselProps> = (props) => {
       </div>
     </div>
   );
-};
-
-export const getStaticProps: GetStaticProps<CarouselProps> = async () => {
-  const photos = await getPhotos();
-  return { props: { photos } };
 };
 
 export default Carousel;

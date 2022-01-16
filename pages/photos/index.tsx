@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import globals from "@lib/globals";
-import { getPhotos, Photo } from "@lib/api";
+import { getPhotos } from "@lib/api";
+import { Photo } from "@lib/types";
 import PageWrapper from "@components/PageWrapper";
 
 type PhotosProps = {

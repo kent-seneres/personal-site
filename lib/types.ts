@@ -18,3 +18,16 @@ export enum ContentType {
   General = "/",
   Blog = "/blog",
 }
+
+export type Photo = {
+  path: string;
+  blurDataURL: string;
+  id: string;
+  name: string;
+  modifiedTime: string;
+  imageMediaMetadata: {
+    height: number;
+    width: number;
+  };
+  description: string | null;
+};
