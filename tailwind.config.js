@@ -5,7 +5,11 @@ module.exports = {
     "./modules/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        "hover-hover": { raw: "(hover: hover)" },
+      },
+    },
   },
   plugins: [require("@tailwindcss/typography")],
 };
