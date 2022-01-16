@@ -61,8 +61,6 @@ const Carousel: NextPage<CarouselProps> = (props) => {
             layout="fill"
             objectFit="contain"
             title={photo.description ?? undefined}
-            placeholder="blur"
-            blurDataURL={photo.blurDataURL}
           />
         )}
       </div>
