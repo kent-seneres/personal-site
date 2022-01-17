@@ -12,6 +12,12 @@ const DoneModal: React.FC<DoneModal> = (props) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   const [showCopy, setShowCopy] = React.useState(false);
+  const [animate, setAnimate] = React.useState(false);
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => setAnimate(props.visible), 250);
+    return () => clearTimeout(timeout);
+  }, [props.visible]);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -60,8 +66,12 @@ const DoneModal: React.FC<DoneModal> = (props) => {
   };
 
   return (
-    <div className={`${props.visible ? "block" : "hidden"} fixed`}>
-      <div className="fixed z-10 flex flex-col items-center justify-center inset-0 bg-gray-700 bg-opacity-50 h-screen w-screen">
+    <div
+      className={`${props.visible ? "block" : "hidden"} ${
+        animate ? "opacity-100" : "opacity-0"
+      } fixed transition-opacity`}
+    >
+      <div className="fixed z-10 flex flex-col items-center justify-center inset-0 bg-slate-700/60 h-screen w-screen">
         <div
           className={`${
             showCopy ? "opacity-100" : "opacity-0"
@@ -71,7 +81,9 @@ const DoneModal: React.FC<DoneModal> = (props) => {
         </div>
         <div
           ref={ref}
-          className="flex flex-col p-8 shadow-xl rounded-lg bg-white"
+          className={`flex flex-col p-8 shadow-xl rounded-lg bg-white ${
+            animate ? "scale-100" : "scale-0"
+          } transition-transform`}
         >
           <div className="flex flex-col border-b text-center">
             <p className="pb-8 whitespace-pre-line">{props.message}</p>
@@ -79,7 +91,7 @@ const DoneModal: React.FC<DoneModal> = (props) => {
             <p className="text-3xl p-4 tabular-nums">{timeRemaining}</p>
           </div>
           <button
-            className="bg-green-600 text-slate-50 text-lg rounded-lg py-2 px-10 mt-8 mx-auto"
+            className="bg-green-600 hover:bg-green-500 text-slate-50 text-lg rounded-lg py-2 px-10 mt-8 mx-auto"
             onClick={onShare}
           >
             share
