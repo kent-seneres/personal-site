@@ -16,11 +16,11 @@ const About: NextPage<AboutProps> = (props) => {
   const pageTitle = `About - ${globals.name}`;
   return (
     <PageWrapper title={pageTitle}>
-      <div className="self-stretch m-4 py-4 border-b text-left">
+      <div className="self-stretch m-4 pb-2 border-b text-left">
         <h1 className="text-4xl font-semibold my-2">About</h1>
       </div>
       <div className="flex flex-col sm:flex-row flex-1 self-stretch">
-        <div className="flex flex-col mx-auto sm:m-4">
+        <div className="flex flex-col mx-auto mt-4 sm:m-4">
           <Image
             src={profile}
             alt="Picture of the author"
@@ -30,7 +30,7 @@ const About: NextPage<AboutProps> = (props) => {
             placeholder="blur"
           />
           <p className="mt-4 text-xl font-medium">{globals.name}</p>
-          <p className="text-md text-slate-400">{globals.jobTitle}</p>
+          <p className="text-md text-slate-500">{globals.jobTitle}</p>
         </div>
         <section className="text-left m-4">
           <Markdown content={props.aboutPost.content} />
