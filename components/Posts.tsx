@@ -18,7 +18,9 @@ const Post: React.FC<PostProps> = (props) => {
     <div className="flex flex-col py-4 text-left border-b">
       <div className="flex items-center justify-between">
         <Link href={props.href}>
-          <a className="text-xl font-semibold text-sky-600">{post.title}</a>
+          <a className="text-xl font-semibold text-sky-600 hover:text-sky-500">
+            {post.title}
+          </a>
         </Link>
         <p className="text-sm text-slate-500">{date}</p>
       </div>

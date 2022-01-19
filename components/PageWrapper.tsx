@@ -13,7 +13,7 @@ const PageWrapper: React.FC<PageWrapperProps> = (props) => {
   const iconPath = props.iconPath ?? "/favicon.ico";
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-sky-200">
+    <div className="bg-gradient-to-br from-slate-50 via-sky-100 to-sky-200">
       <div className="max-w-4xl mx-auto p-2 ">
         <Head>
           <title>{title}</title>

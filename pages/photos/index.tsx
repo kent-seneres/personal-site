@@ -16,7 +16,7 @@ const Photos: NextPage<PhotosProps> = (props) => {
 
   return (
     <PageWrapper title={pageTitle}>
-      <div className="self-stretch m-4 py-4 text-left border-b h-full overflow-hidden">
+      <div className="self-stretch m-4 pb-2 text-left border-b h-full overflow-hidden">
         <h1 className="text-4xl font-semibold my-2">Photos</h1>
       </div>
       <section className={`flex-1 self-stretch`}>

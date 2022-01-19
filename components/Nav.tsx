@@ -30,11 +30,11 @@ const NavModal: React.FC<NavModalProps> = (props) => {
 
   return (
     <div className={`${props.visible ? "block" : "hidden"}`}>
-      <div className="fixed z-10 flex justify-end items-start inset-0 bg-gray-600 bg-opacity-50 h-full w-full">
-        <div className="flex m-4 p-4 shadow-lg rounded-lg bg-white">
+      <div className="fixed z-10 flex justify-end items-start inset-0 bg-slate-600/60 h-full w-full">
+        <div className="flex m-4 p-4 shadow-lg rounded-lg bg-sky-50">
           <NavItems />
           <button className="self-start ml-4 py-1" onClick={props.onDismiss}>
-            <FiXCircle className="h-6 w-6" />
+            <FiXCircle className="h-6 w-6 opacity-60 hover:opacity-100" />
           </button>
         </div>
       </div>
@@ -62,7 +62,7 @@ const Nav: React.FC<NavProps> = (props) => {
         className="block sm:hidden p-1"
         onClick={() => setOptionsVisible(true)}
       >
-        <FiMoreVertical className="h-6 w-6" />
+        <FiMoreVertical className="h-6 w-6 opacity-60 hover:opacity-100" />
       </button>
       <NavModal
         visible={optionsVisible}
