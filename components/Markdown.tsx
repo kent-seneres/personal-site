@@ -4,12 +4,14 @@ import Code from "@components/Code";
 
 type MarkdownProps = {
   content: string;
+  customClassName?: string;
 };
 
 const Markdown: React.FC<MarkdownProps> = (props) => {
   return (
     <ReactMarkdown
-      className="prose"
+      className={`prose ${props.customClassName}`}
+      linkTarget="_blank"
       components={{
         code({ className, children }) {
           const match = /language-(\w+)/.exec(className ?? "") ?? [];
