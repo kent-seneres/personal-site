@@ -25,7 +25,7 @@ const Project: React.FC<ProjectProps> = (props) => {
         </a>
         <div className="text-sky-500">
           <Markdown
-            customClassName="prose-p:text-slate-500 prose-p:text-base prose-a:text-sky-600 prose-a:hover:text-sky-500"
+            customClassName="prose-p:text-slate-500 prose-p:text-base prose-a:text-sky-600 prose-a:hover:text-sky-500 prose-a:no-underline"
             content={props.description}
           />
         </div>
