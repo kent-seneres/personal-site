@@ -14,7 +14,7 @@ type ProjectProps = {
 const Project: React.FC<ProjectProps> = (props) => {
   return (
     <div className="flex border items-center rounded-lg shadow-md p-4 space-x-4">
-      <div className="w-24 h-24 relative">
+      <div className="w-16 h-16 sm:w-24 sm:h-24 relative">
         <Image src={props.logoSrc} alt="project icon" layout="fill" />
       </div>
       <div className="flex flex-col items-start flex-1 text-left space-y-2">
@@ -25,7 +25,7 @@ const Project: React.FC<ProjectProps> = (props) => {
         </a>
         <div className="text-sky-500">
           <Markdown
-            customClassName="prose-p:text-slate-500 prose-p:text-base prose-a:text-sky-600 prose-a:hover:text-sky-500 prose-a:no-underline"
+            customClassName="prose-p:text-base prose-a:text-sky-600 prose-a:hover:text-sky-500 prose-a:no-underline"
             content={props.description}
           />
         </div>
