@@ -38,6 +38,9 @@ const downloadFile = async (url: string, filePath: string) => {
 };
 
 export const getPhotos = async (): Promise<Photo[]> => {
+  const DEFAULT_BLUR_BASE_64 =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAEElEQVQImWOQ1rCFIwacHABzjwYBnpNl1QAAAABJRU5ErkJggg==";
+
   const PHOTOS_FOLDER_ID = "1-e1OoDPxuuN6S89vbSMSXNBVwd2Ujj9V";
   const photos: Photo[] = [];
 
@@ -65,12 +68,18 @@ export const getPhotos = async (): Promise<Photo[]> => {
 
       // trim off root public directory from path for image src
       const imagePath = filePath.replace(ROOT_PUBLIC_PATH, "");
-      const blurPlaceholder = await getPlaiceholder(imagePath);
+
+      let blurPlaceholder = null;
+      try {
+        blurPlaceholder = await getPlaiceholder(imagePath);
+      } catch (e: any) {
+        console.log(`Failed to generate placeholder blur: ${e.message}`);
+      }
 
       // assert that properties are defined, since they should be included in query
       photos.push({
         path: imagePath,
-        blurDataURL: blurPlaceholder.base64,
+        blurDataURL: blurPlaceholder?.base64 ?? DEFAULT_BLUR_BASE_64,
         id: file.id!,
         name: file.name!,
         modifiedTime: file.modifiedTime!,
