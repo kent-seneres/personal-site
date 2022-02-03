@@ -1,6 +1,6 @@
+import React, { FormEvent } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { CommentType } from "@lib/redis";
-import { FormEvent } from "react";
 
 const fetcher = (input: RequestInfo, init?: RequestInit) =>
   fetch(input, init)
@@ -11,7 +11,11 @@ const useComments = () => {
   const { mutate } = useSWRConfig();
   const { data, error } = useSWR<CommentType[]>("/api/comments", fetcher);
 
+  const [submitLoading, setSubmitLoading] = React.useState(false);
+
   const submit = async (event: FormEvent) => {
+    setSubmitLoading(true);
+
     event.preventDefault();
     const target = event.target as typeof event.target & {
       name: { value: string };
@@ -24,16 +28,15 @@ const useComments = () => {
       createdAt: Date.now(),
     };
 
-    const res = await fetch("/api/comments/add", {
+    await fetch("/api/comments/add", {
       body: JSON.stringify(comment),
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
-    });
-
-    const result = await res.json();
-    console.log(result);
+    })
+      .then(async (res) => await res.json())
+      .finally(() => setSubmitLoading(false));
 
     await mutate("/api/comments");
   };
@@ -42,6 +45,7 @@ const useComments = () => {
     data,
     error,
     submit,
+    submitLoading,
   };
 };
 
