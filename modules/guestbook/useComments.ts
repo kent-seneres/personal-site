@@ -1,6 +1,7 @@
-import React, { FormEvent } from "react";
+import React from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { CommentType } from "@lib/redis";
+import { FormData } from "./types";
 
 const fetcher = (input: RequestInfo, init?: RequestInit) =>
   fetch(input, init)
@@ -13,18 +14,12 @@ const useComments = () => {
 
   const [submitLoading, setSubmitLoading] = React.useState(false);
 
-  const submit = async (event: FormEvent) => {
+  const submit = async (event: FormData) => {
     setSubmitLoading(true);
 
-    event.preventDefault();
-    const target = event.target as typeof event.target & {
-      name: { value: string };
-      content: { value: string };
-    };
-
     const comment: CommentType = {
-      name: target.name.value,
-      content: target.content.value,
+      name: event.name,
+      content: event.content,
       createdAt: Date.now(),
     };
 
