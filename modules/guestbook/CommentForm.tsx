@@ -39,7 +39,7 @@ const CommentForm: React.FC<CommentFormProps> = () => {
           type="text"
           maxLength={NAME_CHAR_LIMIT}
           {...register("name", { required: true, maxLength: NAME_CHAR_LIMIT })}
-          className={`p-2 rounded-md border focus:outline-none w-full ${
+          className={`p-2 rounded-lg border focus:outline-none w-full ${
             errors.name ? "border-red-200" : ""
           }`}
         />
@@ -58,7 +58,7 @@ const CommentForm: React.FC<CommentFormProps> = () => {
             required: true,
             maxLength: CONTENT_CHAR_LIMIT,
           })}
-          className={`p-2 rounded-md border focus:outline-none w-full ${
+          className={`p-2 rounded-lg border focus:outline-none w-full ${
             errors.content ? "border-red-200" : ""
           }`}
         />
