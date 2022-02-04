@@ -10,6 +10,7 @@ import globals from "@lib/globals";
 
 const GuestBook: NextPage = () => {
   const pageTitle = `Guestbook - ${globals.name}`;
+  const preamble = `Leave a message below! Feedback, insights, or knee-slappers are much appreciated.`;
 
   const { data, error } = useComments();
 
@@ -17,6 +18,7 @@ const GuestBook: NextPage = () => {
     <PageWrapper title={pageTitle}>
       <div className="self-stretch m-4 pb-2 border-b text-left">
         <h1 className="text-4xl font-semibold my-2">Guestbook</h1>
+        <p className="my-2">{preamble}</p>
       </div>
       <div className="flex flex-col flex-1 self-stretch m-4 space-y-4">
         <CommentForm />

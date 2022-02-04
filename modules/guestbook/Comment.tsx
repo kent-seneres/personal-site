@@ -16,9 +16,9 @@ const Comment: React.FC<CommentProps> = (props) => {
   };
 
   return (
-    <div className="flex flex-col items-start p-3 rounded-md my-3 bg-slate-50/60 text-left">
+    <div className="flex flex-col items-start p-3 rounded-md my-3 space-y-2 bg-slate-50/60 text-left">
       <div className="flex flex-row items-center space-x-2">
-        <p className="font-semibold">{comment.name}</p>
+        <p className="font-semibold text-sm">{comment.name}</p>
         <span>•</span>
         <p className="font-light text-sm" title={time.toLocaleString()}>
           {time.toLocaleString(undefined, options)}
