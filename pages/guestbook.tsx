@@ -1,16 +1,12 @@
 import type { NextPage } from "next";
 import PageWrapper from "@components/PageWrapper";
-import { Comment, CommentForm, useComments } from "@modules/guestbook";
+import {
+  Comment,
+  CommentForm,
+  ErrorMessage,
+  useComments,
+} from "@modules/guestbook";
 import globals from "@lib/globals";
-
-const ErrorMessage: React.FC = () => {
-  return (
-    <div className="p-4">
-      <p className="font-bold text-lg">Error loading comments</p>
-      <p>Please try again later.</p>
-    </div>
-  );
-};
 
 const GuestBook: NextPage = () => {
   const pageTitle = `Guestbook - ${globals.name}`;
@@ -25,7 +21,12 @@ const GuestBook: NextPage = () => {
       <div className="flex flex-col flex-1 self-stretch m-4 space-y-4">
         <CommentForm />
         <div>
-          {error && <ErrorMessage />}
+          {error && (
+            <ErrorMessage
+              title="Error loading comments"
+              subtitle="Please try again later."
+            />
+          )}
           {data && data.map((c) => <Comment key={c.entityId} comment={c} />)}
         </div>
       </div>
