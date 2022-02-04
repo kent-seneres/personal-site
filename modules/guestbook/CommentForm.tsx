@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { CONTENT_CHAR_LIMIT, NAME_CHAR_LIMIT } from "@lib/redis/constants";
+import { useLocalStorage } from "@lib/hooks/useLocalStorage";
 import { FormData } from "./types";
 import { useSubmit } from "./useSubmit";
 import ErrorMessage from "./ErrorMessage";
@@ -16,8 +17,10 @@ const CommentForm: React.FC<CommentFormProps> = () => {
   } = useForm<FormData>();
 
   const { submit, loading, success, error } = useSubmit();
+  const [name, setName] = useLocalStorage("name", "");
 
   const onSubmit = (data: FormData) => {
+    setName(data.name);
     submit(data);
   };
 
@@ -44,6 +47,7 @@ const CommentForm: React.FC<CommentFormProps> = () => {
           <input
             type="text"
             maxLength={NAME_CHAR_LIMIT}
+            defaultValue={name}
             {...register("name", {
               required: true,
               maxLength: NAME_CHAR_LIMIT,
