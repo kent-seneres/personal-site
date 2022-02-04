@@ -5,10 +5,11 @@ import LinkButton from "@components/LinkButton";
 const NavItems: React.FC = () => {
   return (
     <nav className="text-sm font-medium">
-      <ul className="flex flex-col space-y-2 sm:flex-row sm:flex-wrap sm:space-y-0 sm:space-x-2">
+      <ul className="flex flex-col space-y-2 md:flex-row md:flex-wrap md:space-y-0 md:space-x-2">
         <LinkButton href="/blog">Blog</LinkButton>
         <LinkButton href="/photos">Photos</LinkButton>
         <LinkButton href="/projects">Projects</LinkButton>
+        <LinkButton href="/guestbook">Guestbook</LinkButton>
         <LinkButton href="/about">About</LinkButton>
       </ul>
     </nav>
@@ -55,11 +56,11 @@ const Nav: React.FC<NavProps> = (props) => {
 
   return (
     <div>
-      <div className="hidden sm:block">
+      <div className="hidden md:block">
         <NavItems />
       </div>
       <button
-        className="block sm:hidden p-1"
+        className="block md:hidden p-1"
         onClick={() => setOptionsVisible(true)}
       >
         <FiMoreVertical className="h-6 w-6 opacity-60 hover:opacity-100" />
