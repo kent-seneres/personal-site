@@ -26,8 +26,40 @@ const Tile: React.FC<TileProps> = (props) => {
   );
 };
 
+type RowProps = {
+  length: number;
+  values: string[] | AnswerTile[];
+};
+
+const Row: React.FC<RowProps> = (props) => {
+  const padEnd = (
+    array: string[] | AnswerTile[],
+    minLength: number
+  ): string[] | AnswerTile[] => {
+    return Object.assign(new Array(minLength).fill(""), array);
+  };
+
+  return (
+    <div className="flex flex-row justify-center">
+      {padEnd(props.values, props.length).map((tile, i) =>
+        typeof tile === "string" ? (
+          <Tile key={`${tile}${i}`} value={tile} state={LetterState.UNKNOWN} />
+        ) : (
+          <Tile
+            key={`${tile.value}${i}`}
+            value={tile.value}
+            state={tile.state}
+          />
+        )
+      )}
+    </div>
+  );
+};
+
 type BoardProps = {
-  size: number;
+  maxAttempts: number;
+  letterCount: number;
+
   board: AnswerTile[][];
   activeRow: string[];
 
@@ -37,30 +69,21 @@ type BoardProps = {
 const Board: React.FC<BoardProps> = (props) => {
   return (
     <div className="flex flex-col my-4 self-stretch">
-      {props.board.map((row, i) => (
-        <div key={`${row.join()}${i}`} className="flex justify-center">
-          {row.map((tile, i) => (
-            <Tile
-              key={`${tile.value}${i}`}
-              value={tile.value}
-              state={tile.state}
-            />
-          ))}
-        </div>
-      ))}
-      {!props.done && (
-        <div className="flex justify-center">
-          {Array(props.size)
-            .fill("")
-            .map((tile, i) => (
-              <Tile
-                key={`active-${tile.value}${i}`}
-                value={props.activeRow[i]}
-                state={LetterState.UNKNOWN}
-              />
-            ))}
-        </div>
-      )}
+      {Array(props.maxAttempts)
+        .fill(0)
+        .map((_, i) => (
+          <Row
+            key={`row-${i}`}
+            length={props.letterCount}
+            values={
+              i < props.board.length
+                ? props.board[i]
+                : i === props.board.length
+                ? props.activeRow
+                : []
+            }
+          />
+        ))}
     </div>
   );
 };

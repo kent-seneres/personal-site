@@ -8,13 +8,15 @@ import Keyboard from "@components/Keyboard";
 const ANSWER = "gaitup";
 const TITLE = "reveal";
 
-const Tortle: NextPage = () => {
+const ATTEMPTS = 6;
+
+const Reveal: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
   const keyboardRef = React.useRef<HTMLDivElement>(null);
 
   const { board, activeRow, done, winner, onKey } = useGame({
     answer: ANSWER,
-    limit: 6,
+    limit: ATTEMPTS,
   });
 
   const message = winner
@@ -68,7 +70,8 @@ const Tortle: NextPage = () => {
       </div>
 
       <Board
-        size={ANSWER.length}
+        maxAttempts={ATTEMPTS}
+        letterCount={ANSWER.length}
         done={done}
         board={board}
         activeRow={activeRow}
@@ -87,4 +90,4 @@ const Tortle: NextPage = () => {
   );
 };
 
-export default Tortle;
+export default Reveal;

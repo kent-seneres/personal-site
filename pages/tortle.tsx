@@ -6,6 +6,7 @@ import { Board, DoneModal, LetterState, useGame } from "@modules/tortle";
 import Keyboard from "@components/Keyboard";
 
 const ANSWER = "tortle";
+const ATTEMPTS = 1;
 
 const Tortle: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
@@ -13,7 +14,7 @@ const Tortle: NextPage = () => {
 
   const { board, activeRow, done, winner, onKey } = useGame({
     answer: ANSWER,
-    limit: 1,
+    limit: ATTEMPTS,
   });
 
   const message = winner
@@ -67,7 +68,8 @@ const Tortle: NextPage = () => {
       </div>
 
       <Board
-        size={ANSWER.length}
+        maxAttempts={ATTEMPTS}
+        letterCount={ANSWER.length}
         done={done}
         board={board}
         activeRow={activeRow}
