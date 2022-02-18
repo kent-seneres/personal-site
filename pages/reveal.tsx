@@ -5,7 +5,8 @@ import React from "react";
 import { Board, DoneModal, LetterState, useGame } from "@modules/tortle";
 import Keyboard from "@components/Keyboard";
 
-const ANSWER = "tortle";
+const ANSWER = "gaitup";
+const TITLE = "reveal";
 
 const Tortle: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
@@ -13,11 +14,11 @@ const Tortle: NextPage = () => {
 
   const { board, activeRow, done, winner, onKey } = useGame({
     answer: ANSWER,
-    limit: 1,
+    limit: 6,
   });
 
   const message = winner
-    ? "🐢 you got it 🐢"
+    ? "⭐️ you got it ⭐️"
     : "you did not get it\ntry again tomorrow";
 
   const share = () => {
@@ -38,7 +39,7 @@ const Tortle: NextPage = () => {
       })
       .join("");
 
-    const title = winner ? `🐢 ${ANSWER} 🐢` : ANSWER;
+    const title = winner ? `⭐️ ${ANSWER} ⭐️` : ANSWER;
     navigator.clipboard.writeText(`${title}\n\n${results}`);
   };
 
@@ -55,15 +56,15 @@ const Tortle: NextPage = () => {
   return (
     <div className="absolute inset-0 flex flex-col m-auto p-4 max-w-lg items-center justify-between">
       <Head>
-        <title>{ANSWER} - a daily word thing</title>
+        <title>{TITLE}</title>
       </Head>
       <div className="grid grid-cols-3 self-stretch border-b p-2">
         <div className="flex items-center">
           <Link href={{ pathname: "/" }}>
-            <a className="p-2 text-2xl">🐢</a>
+            <a className="p-2 text-2xl">⭐️</a>
           </Link>
         </div>
-        <h1 className="text-5xl font-bold text-slate-700">{ANSWER}</h1>
+        <h1 className="text-5xl font-bold text-slate-700">{TITLE}</h1>
       </div>
 
       <Board
@@ -77,7 +78,7 @@ const Tortle: NextPage = () => {
 
       <DoneModal
         visible={doneVisible}
-        title={ANSWER}
+        title={TITLE}
         message={message}
         onShare={() => share()}
         onDismiss={() => setDoneVisible(false)}

@@ -2,6 +2,7 @@ import React from "react";
 
 type DoneModal = {
   visible: boolean;
+  title: string;
   message: string;
   onShare: () => void;
   onDismiss: () => void;
@@ -87,7 +88,7 @@ const DoneModal: React.FC<DoneModal> = (props) => {
         >
           <div className="flex flex-col border-b text-center">
             <p className="pb-8 whitespace-pre-line">{props.message}</p>
-            <h2 className="text-xl font-bold">next tortle</h2>
+            <h2 className="text-xl font-bold">next {props.title}</h2>
             <p className="text-3xl p-4 tabular-nums">{timeRemaining}</p>
           </div>
           <button
