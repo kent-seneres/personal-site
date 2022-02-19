@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { Board, DoneModal, LetterState, useGame } from "@modules/tortle";
+import { Board, DoneModal, LetterState, useGame } from "@modules/wordle";
 import Keyboard from "@components/Keyboard";
 
 const ANSWER = "tortle";
