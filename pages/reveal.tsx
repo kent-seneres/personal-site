@@ -10,12 +10,14 @@ import {
   useGetWord,
 } from "@modules/wordle";
 import Keyboard from "@components/Keyboard";
+import Confetti from "@components/Confetti";
 
 const TITLE = "reveal";
 const ATTEMPTS = 6;
 
 const Reveal: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
+  const [showConfetti, setShowConfetti] = React.useState(false);
   const keyboardRef = React.useRef<HTMLDivElement>(null);
 
   const { data: answer, loading, error } = useGetWord();
@@ -84,39 +86,52 @@ const Reveal: NextPage = () => {
     keyboardRef.current?.scrollIntoView();
   }, [board]);
 
+  /**
+   * Effect to show confetti on winning and hide after timeout
+   */
+  React.useEffect(() => {
+    setShowConfetti(winner);
+    const timeout = setTimeout(() => setShowConfetti(false), 30000);
+
+    return () => clearTimeout(timeout);
+  }, [winner]);
+
   return (
-    <div className="absolute inset-0 flex flex-col m-auto p-4 max-w-lg items-center justify-between">
-      <Head>
-        <title>{TITLE}</title>
-      </Head>
-      <div className="grid grid-cols-3 self-stretch border-b p-2">
-        <div className="flex items-center">
-          <Link href={{ pathname: "/" }}>
-            <a className="p-2 text-2xl">⭐️</a>
-          </Link>
+    <div>
+      {showConfetti && <Confetti />}
+      <div className="absolute inset-0 flex flex-col m-auto p-4 max-w-lg items-center justify-between">
+        <Head>
+          <title>{TITLE}</title>
+        </Head>
+        <div className="grid grid-cols-3 self-stretch border-b p-2">
+          <div className="flex items-center">
+            <Link href={{ pathname: "/" }}>
+              <a className="p-2 text-2xl">⭐️</a>
+            </Link>
+          </div>
+          <h1 className="text-5xl font-bold text-slate-700">{TITLE}</h1>
         </div>
-        <h1 className="text-5xl font-bold text-slate-700">{TITLE}</h1>
-      </div>
 
-      {!loading && (
-        <Board
-          maxAttempts={ATTEMPTS}
-          letterCount={answer.length}
-          done={done}
-          board={board}
-          activeRow={activeRow}
+        {!loading && (
+          <Board
+            maxAttempts={ATTEMPTS}
+            letterCount={answer.length}
+            done={done}
+            board={board}
+            activeRow={activeRow}
+          />
+        )}
+
+        <Keyboard ref={keyboardRef} onKeyPress={onKey} colorMap={keyColor} />
+
+        <DoneModal
+          visible={doneVisible}
+          title={TITLE}
+          message={message}
+          onShare={() => share()}
+          onDismiss={() => setDoneVisible(false)}
         />
-      )}
-
-      <Keyboard ref={keyboardRef} onKeyPress={onKey} colorMap={keyColor} />
-
-      <DoneModal
-        visible={doneVisible}
-        title={TITLE}
-        message={message}
-        onShare={() => share()}
-        onDismiss={() => setDoneVisible(false)}
-      />
+      </div>
     </div>
   );
 };
