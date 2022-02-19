@@ -2,10 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { Board, DoneModal, LetterState, useGame } from "@modules/tortle";
+import { Board, DoneModal, share, useGame } from "@modules/wordle";
 import Keyboard from "@components/Keyboard";
 
 const ANSWER = "tortle";
+const ATTEMPTS = 1;
 
 const Tortle: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
@@ -13,34 +14,12 @@ const Tortle: NextPage = () => {
 
   const { board, activeRow, done, winner, onKey } = useGame({
     answer: ANSWER,
-    limit: 1,
+    limit: ATTEMPTS,
   });
 
   const message = winner
     ? "🐢 you got it 🐢"
     : "you did not get it\ntry again tomorrow";
-
-  const share = () => {
-    const darkMode =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    const results = board[board.length - 1]
-      .map((t) => {
-        switch (t.state) {
-          case LetterState.CORRECT:
-            return "🟩";
-          case LetterState.MISPLACE:
-            return "🟨";
-          default:
-            return darkMode ? "⬛️" : "⬜";
-        }
-      })
-      .join("");
-
-    const title = winner ? `🐢 ${ANSWER} 🐢` : ANSWER;
-    navigator.clipboard.writeText(`${title}\n\n${results}`);
-  };
 
   React.useEffect(() => {
     if (done) {
@@ -67,7 +46,8 @@ const Tortle: NextPage = () => {
       </div>
 
       <Board
-        size={ANSWER.length}
+        maxAttempts={ATTEMPTS}
+        letterCount={ANSWER.length}
         done={done}
         board={board}
         activeRow={activeRow}
@@ -77,9 +57,9 @@ const Tortle: NextPage = () => {
 
       <DoneModal
         visible={doneVisible}
-        title={ANSWER}
+        timerMessage={`next ${ANSWER}`}
         message={message}
-        onShare={() => share()}
+        onShare={() => share(board, winner ? `🐢 ${ANSWER} 🐢` : ANSWER)}
         onDismiss={() => setDoneVisible(false)}
       />
     </div>

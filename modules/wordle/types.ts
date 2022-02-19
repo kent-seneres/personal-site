@@ -1,7 +1,7 @@
 export const enum LetterState {
   UNKNOWN,
   INVALID,
-  MISPLACE,
+  MISPLACED,
   CORRECT,
 }
 
