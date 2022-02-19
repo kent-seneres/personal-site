@@ -53,18 +53,22 @@ const Reveal: NextPage = () => {
       window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    const results = board[board.length - 1]
-      .map((t) => {
-        switch (t.state) {
-          case LetterState.CORRECT:
-            return "🟩";
-          case LetterState.MISPLACED:
-            return "🟨";
-          default:
-            return darkMode ? "⬛️" : "⬜";
-        }
-      })
-      .join("");
+    const results = board
+      .map((row) =>
+        row
+          .map((t) => {
+            switch (t.state) {
+              case LetterState.CORRECT:
+                return "🟩";
+              case LetterState.MISPLACED:
+                return "🟨";
+              default:
+                return darkMode ? "⬛️" : "⬜";
+            }
+          })
+          .join("")
+      )
+      .join("\n");
 
     const title = winner ? `⭐️ ${TITLE} ⭐️` : TITLE;
     navigator.clipboard.writeText(`${title}\n\n${results}`);
