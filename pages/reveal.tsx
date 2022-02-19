@@ -18,7 +18,7 @@ const Reveal: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
   const keyboardRef = React.useRef<HTMLDivElement>(null);
 
-  const { data: answer, error } = useGetWord();
+  const { data: answer, loading, error } = useGetWord();
 
   const { board, activeRow, done, winner, onKey, keyState } = useGame({
     answer: answer,
@@ -98,13 +98,15 @@ const Reveal: NextPage = () => {
         <h1 className="text-5xl font-bold text-slate-700">{TITLE}</h1>
       </div>
 
-      <Board
-        maxAttempts={ATTEMPTS}
-        letterCount={answer.length}
-        done={done}
-        board={board}
-        activeRow={activeRow}
-      />
+      {!loading && (
+        <Board
+          maxAttempts={ATTEMPTS}
+          letterCount={answer.length}
+          done={done}
+          board={board}
+          activeRow={activeRow}
+        />
+      )}
 
       <Keyboard ref={keyboardRef} onKeyPress={onKey} colorMap={keyColor} />
 

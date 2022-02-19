@@ -8,11 +8,12 @@ const fetcher = (input: RequestInfo, init?: RequestInit) =>
     .then((data) => data.word);
 
 const useGetWord = () => {
-  const { data, error } = useSWR<string>("/api/reveal/word", fetcher, {
-    fallbackData: DEFAULT_WORD,
-  });
+  const { data, error } = useSWR<string>("/api/reveal/word", fetcher);
 
-  return { data: data?.trim() ?? DEFAULT_WORD, error };
+  const word = error ? DEFAULT_WORD : data ? data.trim() : DEFAULT_WORD;
+  const loading = !data;
+
+  return { data: word, loading, error };
 };
 
 export default useGetWord;
