@@ -17,12 +17,20 @@ const useGame = ({ answer, limit }: GameProps) => {
     Partial<Record<string, LetterState>>
   >({});
 
+  // map of letter and number of instances of the letter in the answer
+  const letterCounts = Array.from(answer).reduce(
+    (acc: Record<string, number>, c: string) => {
+      return { ...acc, [c]: acc[c] ? acc[c] + 1 : 1 };
+    },
+    {}
+  );
+
   const submit = () => {
     if (activeRow.length !== answer.length) {
       return;
     }
 
-    let result = activeRow.map((value, index) => {
+    const result = activeRow.map((value, index) => {
       const state =
         answer[index] === value
           ? LetterState.CORRECT
@@ -33,9 +41,27 @@ const useGame = ({ answer, limit }: GameProps) => {
       return { value, state };
     });
 
-    const correctKeys = result.filter((t) => t.state === LetterState.CORRECT);
+    // adjust the correct letter counts of the submitted answer
+    const answerCounts = { ...letterCounts };
+    result.forEach((t) => {
+      if (t.state === LetterState.CORRECT) {
+        answerCounts[t.value] -= 1;
+      }
+    });
+
+    // clean up potentially duplicate letters in the row
+    result.forEach((t) => {
+      if (t.state === LetterState.MISPLACED) {
+        if (answerCounts[t.value] === 0) {
+          t.state = LetterState.INVALID;
+        } else {
+          answerCounts[t.value] -= 1;
+        }
+      }
+    });
 
     // update global key states
+    // sort to avoid overriding correct with misplaced state
     [...result]
       .sort((a, b) => a.state - b.state)
       .forEach((t) => {
@@ -44,35 +70,6 @@ const useGame = ({ answer, limit }: GameProps) => {
 
         setKeyState((current) => ({ ...current, [t.value]: newState }));
       });
-
-    result.map((t, i, arr) => {});
-
-    // clean up duplicate letters in the row
-    result = result.map((t, i, arr) => {
-      // if a letter appears twice, one correct and one misplaced
-      // label the misplaced letter as invalid
-      if (
-        t.state === LetterState.MISPLACED &&
-        correctKeys.find((correctTile) => t.value === correctTile.value)
-      ) {
-        return { ...t, state: LetterState.INVALID };
-      }
-
-      // if a letter already exists in the row
-      // mark the second place as invalid, unless it's correct
-      if (
-        arr
-          .slice(0, i)
-          .some(
-            (previous) =>
-              t.value === previous.value && t.state !== LetterState.CORRECT
-          )
-      ) {
-        return { ...t, state: LetterState.INVALID };
-      }
-
-      return t;
-    });
 
     const win = result.every((t) => t.state === LetterState.CORRECT);
     setWinner(win);
