@@ -2,8 +2,8 @@ import React from "react";
 
 type DoneModal = {
   visible: boolean;
-  title: string;
   message: string;
+  timerMessage?: string;
   onShare: () => void;
   onDismiss: () => void;
 };
@@ -88,8 +88,12 @@ const DoneModal: React.FC<DoneModal> = (props) => {
         >
           <div className="flex flex-col border-b text-center">
             <p className="pb-8 whitespace-pre-line">{props.message}</p>
-            <h2 className="text-xl font-bold">{props.title}</h2>
-            <p className="text-3xl p-4 tabular-nums">{timeRemaining}</p>
+            {props.timerMessage && (
+              <>
+                <h2 className="text-xl font-bold">{props.timerMessage}</h2>
+                <p className="text-3xl p-4 tabular-nums">{timeRemaining}</p>
+              </>
+            )}
           </div>
           <button
             className="bg-green-600 hover:bg-green-500 text-slate-50 text-lg rounded-lg py-2 px-10 mt-8 mx-auto"

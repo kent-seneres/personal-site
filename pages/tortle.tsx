@@ -57,7 +57,7 @@ const Tortle: NextPage = () => {
 
       <DoneModal
         visible={doneVisible}
-        title={`next ${ANSWER}`}
+        timerMessage={`next ${ANSWER}`}
         message={message}
         onShare={() => share(board, winner ? `🐢 ${ANSWER} 🐢` : ANSWER)}
         onDismiss={() => setDoneVisible(false)}
