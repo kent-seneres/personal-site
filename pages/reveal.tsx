@@ -2,20 +2,26 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { Board, DoneModal, LetterState, useGame } from "@modules/wordle";
+import {
+  Board,
+  DoneModal,
+  LetterState,
+  useGame,
+  useGetWord,
+} from "@modules/wordle";
 import Keyboard from "@components/Keyboard";
 
-const ANSWER = "gaitup";
 const TITLE = "reveal";
-
 const ATTEMPTS = 6;
 
 const Reveal: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
   const keyboardRef = React.useRef<HTMLDivElement>(null);
 
+  const { data: answer, error } = useGetWord();
+
   const { board, activeRow, done, winner, onKey, keyState } = useGame({
-    answer: ANSWER,
+    answer: answer,
     limit: ATTEMPTS,
   });
 
@@ -60,7 +66,7 @@ const Reveal: NextPage = () => {
       })
       .join("");
 
-    const title = winner ? `⭐️ ${ANSWER} ⭐️` : ANSWER;
+    const title = winner ? `⭐️ ${TITLE} ⭐️` : TITLE;
     navigator.clipboard.writeText(`${title}\n\n${results}`);
   };
 
@@ -90,7 +96,7 @@ const Reveal: NextPage = () => {
 
       <Board
         maxAttempts={ATTEMPTS}
-        letterCount={ANSWER.length}
+        letterCount={answer.length}
         done={done}
         board={board}
         activeRow={activeRow}
