@@ -1,5 +1,5 @@
 import React from "react";
-import Confetti from "react-confetti";
+import ReactConfetti from "react-confetti";
 
 // source: https://usehooks.com/useWindowSize/
 const useWindowSize = () => {
@@ -28,10 +28,10 @@ const useWindowSize = () => {
   return windowSize;
 };
 
-export default () => {
+const Confetti: React.FC<{}> = () => {
   const { width, height } = useWindowSize();
   return (
-    <Confetti
+    <ReactConfetti
       width={width}
       height={height}
       gravity={0.2}
@@ -43,3 +43,5 @@ export default () => {
     />
   );
 };
+
+export default Confetti;
