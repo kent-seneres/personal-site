@@ -102,6 +102,7 @@ const Reveal: NextPage = () => {
         <DoneModal
           visible={doneVisible}
           message={message}
+          timerMessage={winner ? undefined : "next reveal"}
           onShare={() => share(board, winner ? `⭐️ ${TITLE} ⭐️` : TITLE)}
           onDismiss={() => setDoneVisible(false)}
         />
