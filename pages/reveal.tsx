@@ -6,6 +6,7 @@ import {
   Board,
   DoneModal,
   LetterState,
+  share,
   useGame,
   useGetWord,
 } from "@modules/wordle";
@@ -49,32 +50,6 @@ const Reveal: NextPage = () => {
   const message = winner
     ? "⭐️ you got it ⭐️"
     : "you did not get it\ntry again tomorrow";
-
-  const share = () => {
-    const darkMode =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    const results = board
-      .map((row) =>
-        row
-          .map((t) => {
-            switch (t.state) {
-              case LetterState.CORRECT:
-                return "🟩";
-              case LetterState.MISPLACED:
-                return "🟨";
-              default:
-                return darkMode ? "⬛️" : "⬜";
-            }
-          })
-          .join("")
-      )
-      .join("\n");
-
-    const title = winner ? `⭐️ ${TITLE} ⭐️` : TITLE;
-    navigator.clipboard.writeText(`${title}\n\n${results}`);
-  };
 
   React.useEffect(() => {
     if (done) {
@@ -126,9 +101,9 @@ const Reveal: NextPage = () => {
 
         <DoneModal
           visible={doneVisible}
-          title={TITLE}
+          title={"nice!"}
           message={message}
-          onShare={() => share()}
+          onShare={() => share(board, winner ? `⭐️ ${TITLE} ⭐️` : TITLE)}
           onDismiss={() => setDoneVisible(false)}
         />
       </div>

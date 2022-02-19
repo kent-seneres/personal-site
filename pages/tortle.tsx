@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { Board, DoneModal, LetterState, useGame } from "@modules/wordle";
+import { Board, DoneModal, share, useGame } from "@modules/wordle";
 import Keyboard from "@components/Keyboard";
 
 const ANSWER = "tortle";
@@ -20,28 +20,6 @@ const Tortle: NextPage = () => {
   const message = winner
     ? "🐢 you got it 🐢"
     : "you did not get it\ntry again tomorrow";
-
-  const share = () => {
-    const darkMode =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    const results = board[board.length - 1]
-      .map((t) => {
-        switch (t.state) {
-          case LetterState.CORRECT:
-            return "🟩";
-          case LetterState.MISPLACED:
-            return "🟨";
-          default:
-            return darkMode ? "⬛️" : "⬜";
-        }
-      })
-      .join("");
-
-    const title = winner ? `🐢 ${ANSWER} 🐢` : ANSWER;
-    navigator.clipboard.writeText(`${title}\n\n${results}`);
-  };
 
   React.useEffect(() => {
     if (done) {
@@ -79,9 +57,9 @@ const Tortle: NextPage = () => {
 
       <DoneModal
         visible={doneVisible}
-        title={ANSWER}
+        title={`next ${ANSWER}`}
         message={message}
-        onShare={() => share()}
+        onShare={() => share(board, winner ? `🐢 ${ANSWER} 🐢` : ANSWER)}
         onDismiss={() => setDoneVisible(false)}
       />
     </div>
