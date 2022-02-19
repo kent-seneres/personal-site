@@ -3,12 +3,15 @@ import React from "react";
 type KeyProps = {
   value: string;
   onClick: (key: string) => void;
+  color?: string;
 };
 
 const Key: React.FC<KeyProps> = (props) => {
   return (
     <button
-      className="flex flex-1 h-12 items-center justify-center bg-slate-500 rounded-md m-0.5"
+      className={`flex flex-1 h-12 items-center justify-center rounded-md m-0.5 ${
+        props.color ? props.color : "bg-slate-500"
+      }`}
       onClick={() => props.onClick(props.value)}
     >
       <span
@@ -28,6 +31,7 @@ const ROW_3 = ["enter", "z", "x", "c", "v", "b", "n", "m", "⌫"];
 
 type KeyboardProps = {
   onKeyPress: (value: string) => void;
+  colorMap?: Partial<Record<string, string>>;
 };
 
 const Keyboard = React.forwardRef<HTMLDivElement, KeyboardProps>(
@@ -46,7 +50,12 @@ const Keyboard = React.forwardRef<HTMLDivElement, KeyboardProps>(
     }, [props]);
 
     const mapToKey = (k: string) => (
-      <Key key={k} value={k} onClick={props.onKeyPress} />
+      <Key
+        key={k}
+        value={k}
+        onClick={props.onKeyPress}
+        color={props.colorMap?.[k]}
+      />
     );
 
     return (

@@ -31,7 +31,7 @@ const Tortle: NextPage = () => {
         switch (t.state) {
           case LetterState.CORRECT:
             return "🟩";
-          case LetterState.MISPLACE:
+          case LetterState.MISPLACED:
             return "🟨";
           default:
             return darkMode ? "⬛️" : "⬜";

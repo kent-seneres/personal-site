@@ -13,6 +13,10 @@ const useGame = ({ answer, limit }: GameProps) => {
   const [done, setDone] = React.useState(false);
   const [winner, setWinner] = React.useState(false);
 
+  const [keyState, setKeyState] = React.useState<
+    Partial<Record<string, LetterState>>
+  >({});
+
   const submit = () => {
     if (activeRow.length !== answer.length) {
       return;
@@ -23,7 +27,7 @@ const useGame = ({ answer, limit }: GameProps) => {
         answer[index] === value
           ? LetterState.CORRECT
           : answer.includes(value)
-          ? LetterState.MISPLACE
+          ? LetterState.MISPLACED
           : LetterState.INVALID;
 
       return { value, state };
@@ -31,14 +35,31 @@ const useGame = ({ answer, limit }: GameProps) => {
 
     const correctKeys = result.filter((t) => t.state === LetterState.CORRECT);
 
+    // update global key states
+    [...result]
+      .sort((a, b) => a.state - b.state)
+      .forEach((t) => {
+        const currentState = keyState[t.value] ?? LetterState.UNKNOWN;
+        const newState = t.state > currentState ? t.state : currentState;
+
+        setKeyState((current) => ({ ...current, [t.value]: newState }));
+      });
+
+    result.map((t, i, arr) => {});
+
+    // clean up duplicate letters in the row
     result = result.map((t, i, arr) => {
+      // if a letter appears twice, one correct and one misplaced
+      // label the misplaced letter as invalid
       if (
-        t.state === LetterState.MISPLACE &&
+        t.state === LetterState.MISPLACED &&
         correctKeys.find((correctTile) => t.value === correctTile.value)
       ) {
         return { ...t, state: LetterState.INVALID };
       }
 
+      // if a letter already exists in the row
+      // mark the second place as invalid, unless it's correct
       if (
         arr
           .slice(0, i)
@@ -92,7 +113,7 @@ const useGame = ({ answer, limit }: GameProps) => {
     }
   };
 
-  return { board, activeRow, done, winner, onKey };
+  return { board, activeRow, done, winner, onKey, keyState };
 };
 
 export default useGame;

@@ -14,9 +14,28 @@ const Reveal: NextPage = () => {
   const [doneVisible, setDoneVisible] = React.useState(false);
   const keyboardRef = React.useRef<HTMLDivElement>(null);
 
-  const { board, activeRow, done, winner, onKey } = useGame({
+  const { board, activeRow, done, winner, onKey, keyState } = useGame({
     answer: ANSWER,
     limit: ATTEMPTS,
+  });
+
+  const keyColor: Partial<Record<string, string>> = {};
+  Object.keys(keyState).forEach((key) => {
+    const state = keyState[key];
+    let color: string | undefined = undefined;
+    switch (state) {
+      case LetterState.CORRECT:
+        color = "bg-green-600";
+        break;
+      case LetterState.MISPLACED:
+        color = "bg-yellow-500";
+        break;
+      case LetterState.INVALID:
+        color = "bg-slate-800";
+        break;
+    }
+
+    keyColor[key] = color;
   });
 
   const message = winner
@@ -33,7 +52,7 @@ const Reveal: NextPage = () => {
         switch (t.state) {
           case LetterState.CORRECT:
             return "🟩";
-          case LetterState.MISPLACE:
+          case LetterState.MISPLACED:
             return "🟨";
           default:
             return darkMode ? "⬛️" : "⬜";
@@ -77,7 +96,7 @@ const Reveal: NextPage = () => {
         activeRow={activeRow}
       />
 
-      <Keyboard ref={keyboardRef} onKeyPress={onKey} />
+      <Keyboard ref={keyboardRef} onKeyPress={onKey} colorMap={keyColor} />
 
       <DoneModal
         visible={doneVisible}

@@ -10,8 +10,8 @@ const Tile: React.FC<TileProps> = (props) => {
     props.state === LetterState.CORRECT
       ? "bg-green-600"
       : props.state === LetterState.INVALID
-      ? "bg-slate-600"
-      : props.state === LetterState.MISPLACE
+      ? "bg-slate-700"
+      : props.state === LetterState.MISPLACED
       ? "bg-yellow-500"
       : "bg-slate-900";
 
