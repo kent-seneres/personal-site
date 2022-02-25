@@ -14,9 +14,10 @@ import Keyboard from "@components/Keyboard";
 import Confetti from "@components/Confetti";
 
 const TITLE = "reveal";
-const ATTEMPTS = 6;
+const DEFAULT_LIMIT = 5;
 
 const Reveal: NextPage = () => {
+  const [limit, setLimit] = React.useState(DEFAULT_LIMIT);
   const [doneVisible, setDoneVisible] = React.useState(false);
   const [showConfetti, setShowConfetti] = React.useState(false);
   const keyboardRef = React.useRef<HTMLDivElement>(null);
@@ -25,7 +26,7 @@ const Reveal: NextPage = () => {
 
   const { board, activeRow, done, winner, onKey, keyState } = useGame({
     answer: answer,
-    limit: ATTEMPTS,
+    limit: limit,
   });
 
   const keyColor: Partial<Record<string, string>> = {};
@@ -48,13 +49,17 @@ const Reveal: NextPage = () => {
   });
 
   const message = winner
-    ? "⭐️ you got it ⭐️"
+    ? `⭐️ you got it ⭐️${limit === DEFAULT_LIMIT ? "" : "\n\n(first try)"}`
     : "you did not get it\ntry again tomorrow";
 
   React.useEffect(() => {
-    if (done) {
-      setDoneVisible(true);
-    }
+    if (done)
+      if (winner) {
+        setDoneVisible(true);
+      } else {
+        // increase limit, so there are no losers
+        setLimit((prev) => prev + 1);
+      }
   }, [done]);
 
   React.useEffect(() => {
@@ -74,7 +79,7 @@ const Reveal: NextPage = () => {
   return (
     <div>
       {showConfetti && <Confetti />}
-      <div className="absolute inset-0 flex flex-col m-auto p-4 max-w-lg items-center justify-between">
+      <div className="absolute inset-0 flex flex-col m-auto p-1 max-w-lg items-center justify-between">
         <Head>
           <title>{TITLE}</title>
         </Head>
@@ -89,7 +94,7 @@ const Reveal: NextPage = () => {
 
         {!loading && (
           <Board
-            maxAttempts={ATTEMPTS}
+            maxAttempts={limit}
             letterCount={answer.length}
             done={done}
             board={board}

@@ -17,6 +17,14 @@ const useGame = ({ answer, limit }: GameProps) => {
     Partial<Record<string, LetterState>>
   >({});
 
+  /**
+   * Effect to continue the game if the limit changes
+   * (practically, it should only increase)
+   */
+  React.useEffect(() => {
+    setDone(false);
+  }, [limit]);
+
   // map of letter and number of instances of the letter in the answer
   const letterCounts = Array.from(answer).reduce(
     (acc: Record<string, number>, c: string) => {
