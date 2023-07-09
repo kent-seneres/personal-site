@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { ContentType, PostData } from "@lib/types";
+import { useRouter } from "next/router";
 import Chip from "@components/Chip";
 
 type PostProps = {
@@ -50,49 +51,37 @@ type PostsProps = {
 
 const Posts: React.FC<PostsProps> = (props) => {
   const posts = props.posts;
-
   if (posts.length === 0) {
     return <p className="text-xl text-left my-4">No posts!</p>;
   }
+
+  const router = useRouter();
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
 
   const allTags = props.posts.reduce(
     (tags, post) => new Set([...tags, ...(post.tags ?? [])]),
     new Set<string>()
   );
 
-  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
-  const [showTagFilter, setShowTagFilter] = React.useState(false);
-
-  const toggleTagSelection = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags((prev) => prev.filter((t) => t !== tag));
-    } else {
-      setSelectedTags((prev) => [...prev, tag]);
-    }
-  };
-
   const selectTag = (tag: string) => {
-    setShowTagFilter(true);
-    if (!selectedTags.includes(tag)) {
-      setSelectedTags((prev) => [...prev, tag]);
-    }
+    router.push({
+      query: { ...router.query, tag },
+    });
   };
+
+  React.useEffect(() => {
+    const queryTags = router.query.tag
+      ? Array.isArray(router.query.tag)
+        ? router.query.tag
+        : [router.query.tag]
+      : [];
+
+    const validTags = queryTags.filter((t) => allTags.has(t));
+    setSelectedTags(validTags);
+  }, [router.query]);
 
   return (
     <div className="space-y-4">
-      {showTagFilter && (
-        <div className="flex row space-x-1 items-center">
-          <p className="text-sm">Filter by:</p>
-          {[...allTags].map((t) => (
-            <Chip
-              key={`summary-${t}`}
-              value={t}
-              highlighted={selectedTags.includes(t)}
-              onClick={() => toggleTagSelection(t)}
-            />
-          ))}
-        </div>
-      )}
       <ul>
         {posts
           .filter(
