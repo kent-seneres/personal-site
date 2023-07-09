@@ -61,6 +61,7 @@ const Posts: React.FC<PostsProps> = (props) => {
   );
 
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const [showTagFilter, setShowTagFilter] = React.useState(false);
 
   const toggleTagSelection = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -71,6 +72,7 @@ const Posts: React.FC<PostsProps> = (props) => {
   };
 
   const selectTag = (tag: string) => {
+    setShowTagFilter(true);
     if (!selectedTags.includes(tag)) {
       setSelectedTags((prev) => [...prev, tag]);
     }
@@ -78,17 +80,19 @@ const Posts: React.FC<PostsProps> = (props) => {
 
   return (
     <div className="space-y-4">
-      <div className="flex row space-x-1 items-center">
-        <p className="text-sm">Filter by:</p>
-        {[...allTags].map((t) => (
-          <Chip
-            key={`summary-${t}`}
-            value={t}
-            highlighted={selectedTags.includes(t)}
-            onClick={() => toggleTagSelection(t)}
-          />
-        ))}
-      </div>
+      {showTagFilter && (
+        <div className="flex row space-x-1 items-center">
+          <p className="text-sm">Filter by:</p>
+          {[...allTags].map((t) => (
+            <Chip
+              key={`summary-${t}`}
+              value={t}
+              highlighted={selectedTags.includes(t)}
+              onClick={() => toggleTagSelection(t)}
+            />
+          ))}
+        </div>
+      )}
       <ul>
         {posts
           .filter(
