@@ -50,13 +50,13 @@ type PostsProps = {
 };
 
 const Posts: React.FC<PostsProps> = (props) => {
+  const router = useRouter();
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+
   const posts = props.posts;
   if (posts.length === 0) {
     return <p className="text-xl text-left my-4">No posts!</p>;
   }
-
-  const router = useRouter();
-  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
 
   const allTags = props.posts.reduce(
     (tags, post) => new Set([...tags, ...(post.tags ?? [])]),
