@@ -54,11 +54,8 @@ const Posts: React.FC<PostsProps> = (props) => {
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
 
   const posts = props.posts;
-  if (posts.length === 0) {
-    return <p className="text-xl text-left my-4">No posts!</p>;
-  }
 
-  const allTags = props.posts.reduce(
+  const allTags = posts.reduce(
     (tags, post) => new Set([...tags, ...(post.tags ?? [])]),
     new Set<string>()
   );
@@ -79,6 +76,10 @@ const Posts: React.FC<PostsProps> = (props) => {
     const validTags = queryTags.filter((t) => allTags.has(t));
     setSelectedTags(validTags);
   }, [router.query]);
+
+  if (posts.length === 0) {
+    return <p className="text-xl text-left my-4">No posts!</p>;
+  }
 
   return (
     <div className="space-y-4">
