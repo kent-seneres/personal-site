@@ -1,24 +1,24 @@
 ---
 title: Carrot Cake
-description: '"you should sell this"'
+description: '"you should open a carrot cake food truck"'
 
 published: true
 datePublished: 2023/07/09
 
 tags:
-  - recipes
+  - recipe
 ---
 
-Merged from a couple different internet recipes. Key is the maple cream cheese frosting. Bake in a **9x13 pan**.
+Key is the maple cream cheese frosting. Bake in a **9x13 pan**.
 
-### Instructions
+## Instructions
 
 1. Set oven to **350°F**
 1. Grease and flour pan
 
 1. Into the food processor, process until carrot pieces are small:
 
-   - **3 cups carrots**
+   - **1 lb bag of carrots**
    - **1 cubic inch ginger**
 
 1. Whisk together in large bowl:
@@ -47,7 +47,7 @@ Merged from a couple different internet recipes. Key is the maple cream cheese f
 
 1. Let cake cool in pan for ~5 minutes, then take out of pan to cool on rack. Let cool until not so warm before applying icing.
 
-#### Icing
+### Icing
 
 1. Mix in medium bowl until smooth:
 

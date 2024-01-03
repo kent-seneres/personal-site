@@ -6,7 +6,7 @@ published: true
 datePublished: 2023/07/09
 
 tags:
-  - recipes
+  - recipe
 ---
 
 Can fit 12 cookies in a **9x13 pan**. Makes 24 cookies total (2 batches).
