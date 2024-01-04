@@ -3779,7 +3779,7 @@ redis-om@^0.4.3:
     redis "^4.6.4"
     ulid "^2.3.0"
 
-redis@^4.6.4:
+redis@^4.6.12, redis@^4.6.4:
   version "4.6.12"
   resolved "https://registry.yarnpkg.com/redis/-/redis-4.6.12.tgz#b607c93e9b0dd09e641f837092e9a68cc6ac6570"
   integrity sha512-41Xuuko6P4uH4VPe5nE3BqXHB7a9lkFL0J29AlxKaIfD6eWO8VO/5PDF9ad2oS+mswMsfFxaM5DlE3tnXT+P8Q==
