@@ -6,7 +6,5 @@ export default async function handler(
   resp: NextApiResponse
 ) {
   const comments = await getComments();
-  comments.sort((a, b) => b.createdAt - a.createdAt);
-
   resp.status(200).json({ comments });
 }

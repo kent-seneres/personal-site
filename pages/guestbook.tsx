@@ -10,7 +10,7 @@ import globals from "@lib/globals";
 
 const GuestBook: NextPage = () => {
   const pageTitle = `Guestbook - ${globals.name}`;
-  const preamble = `Leave a message below! Feedback, insights, or knee-slappers are much appreciated.`;
+  const preamble = `Leave a message below! If the redis database hasn't expired, anyway.`;
 
   const { data, error } = useComments();
 

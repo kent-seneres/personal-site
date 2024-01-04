@@ -1,4 +1,4 @@
-import { Entity, Schema, Repository } from "redis-om";
+import { Schema, Repository } from "redis-om";
 import { connect } from "../redis";
 
 export type CommentType = {
@@ -8,17 +8,10 @@ export type CommentType = {
   createdAt: number;
 };
 
-// TODO: figure out how to clean up type definitions
-interface Comment {
-  name: string;
-  content: string;
-  createdAt: number;
-}
-class Comment extends Entity {}
-const schema = new Schema(Comment, {
+const schema = new Schema("comment", {
   name: { type: "string" },
   content: { type: "string" },
-  createdAt: { type: "number" },
+  createdAt: { type: "number", sortable: true },
 });
 
 const getRepository = async () => {
@@ -30,21 +23,20 @@ const getRepository = async () => {
 
 export async function createIndex() {
   const repository = await getRepository();
+  console.log('create')
   await repository.createIndex();
 }
 
 export const getComments = async () => {
   const repository = await getRepository();
-  const comments = await repository.search().returnAll();
-
+  const comments = await repository.search().sortDescending('createdAt').returnAll();
+  
   return comments;
 };
 
 export const createComment = async (data: CommentType) => {
   const repository = await getRepository();
-
-  const comment = repository.createEntity(data);
-  const id = await repository.save(comment);
+  const id = await repository.save(data);
 
   return id;
 };
