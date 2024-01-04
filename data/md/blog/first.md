@@ -6,8 +6,6 @@ published: true
 datePublished: 2022/01/07
 
 tags:
-  - nextjs
-  - vercel
   - blog
 ---
 
