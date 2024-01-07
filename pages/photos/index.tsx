@@ -29,6 +29,7 @@ const Photos: NextPage<PhotosProps> = (props) => {
                 }
                 key={index}
                 href={`/photos/carousel#${index}`}
+                passHref
               >
                 <Image
                   className="p-0.5 object-cover"

@@ -60,12 +60,6 @@ const Projects: NextPage = () => {
           href="https://github.com/kent-seneres/weather"
           logoSrc="/images/projects/weather.png"
         />
-        <Project
-          title="Wheel of Laura"
-          description={`Randomize wheel`}
-          href="/wheeloflaura"
-          logoSrc="/images/projects/weather.png"
-        />
       </div>
     </PageWrapper>
   );
