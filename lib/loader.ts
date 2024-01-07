@@ -23,7 +23,7 @@ const markdownToPost = (file: RawFile): PostData => {
     content: metadata.content,
 
     published: metadata.data.published ?? false,
-    datePublished: metadata.data.datePublished ?? null,
+    datePublished: new Date(metadata.data.datePublished).getTime(),
 
     subtitle: metadata.data.subtitle ?? null,
     description: metadata.data.description ?? null,
@@ -59,5 +59,5 @@ export const loadBlogPosts = (): PostData[] => {
   return getFiles(ContentType.Blog)
     .map((filename) => loadPost(ContentType.Blog, filename))
     .filter((p) => p.published)
-    .sort((a, b) => (b.datePublished ?? 0) - (a.datePublished ?? 0));
+    .sort((a, b) => b.datePublished - a.datePublished);
 };
