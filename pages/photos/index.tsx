@@ -23,20 +23,23 @@ const Photos: NextPage<PhotosProps> = (props) => {
         <div className={`flex flex-row flex-wrap`}>
           {props.photos.map((photo, index) => {
             return (
-              <Link key={index} href={`/photos/carousel#${index}`}>
-                <a className={"p-0.5 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-auto"}>
-                  <Image
-                    src={photo.path}
-                    alt={photo.name}
-                    width="100%"
-                    height="100%"
-                    layout={"responsive"}
-                    objectFit={"cover"}
-                    placeholder="blur"
-                    blurDataURL={photo.blurDataURL}
-                    title={photo.description ?? undefined}
-                  />
-                </a>
+              <Link
+                className={
+                  "w-full sm:w-1/2 md:w-1/3 lg:w-1/4 aspect-square relative"
+                }
+                key={index}
+                href={`/photos/carousel#${index}`}
+                passHref
+              >
+                <Image
+                  className="p-0.5 object-cover"
+                  src={photo.path}
+                  alt={photo.name}
+                  fill
+                  placeholder="blur"
+                  blurDataURL={photo.blurDataURL}
+                  title={photo.description ?? undefined}
+                />
               </Link>
             );
           })}

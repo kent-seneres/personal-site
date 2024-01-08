@@ -38,8 +38,8 @@ const Tortle: NextPage = () => {
       </Head>
       <div className="grid grid-cols-3 self-stretch border-b p-2">
         <div className="flex items-center">
-          <Link href={{ pathname: "/" }}>
-            <a className="p-2 text-2xl">🐢</a>
+          <Link href={{ pathname: "/" }} className="p-2 text-2xl">
+            🐢
           </Link>
         </div>
         <h1 className="text-5xl font-bold text-slate-700">{ANSWER}</h1>

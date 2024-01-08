@@ -15,7 +15,7 @@ const Project: React.FC<ProjectProps> = (props) => {
   return (
     <div className="flex border items-center rounded-lg shadow-md p-4 space-x-4">
       <div className="w-16 h-16 sm:w-24 sm:h-24 relative">
-        <Image src={props.logoSrc} alt="project icon" layout="fill" />
+        <Image src={props.logoSrc} alt="project icon" fill />
       </div>
       <div className="flex flex-col items-start flex-1 text-left space-y-2">
         <a href={props.href} target="_blank" rel="noopener noreferrer">

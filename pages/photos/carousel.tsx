@@ -58,8 +58,8 @@ const Carousel: NextPage<CarouselProps> = (props) => {
           <Image
             src={photo.path}
             alt={photo.name}
-            layout="fill"
-            objectFit="contain"
+            fill
+            className="object-contain"
             title={photo.description ?? undefined}
           />
         )}

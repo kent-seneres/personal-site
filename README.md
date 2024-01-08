@@ -1,34 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Blog Posts
 
-## Getting Started
+All of the blog post entries are markdown files stored in the repository under `data/md/blog`. Each file should contain a preamble at the top with all the necessary metadata:
 
-First, run the development server:
+```
+---
+title: example title
+description: example
 
-```bash
-npm run dev
-# or
-yarn dev
+published: true or false
+datePublished: date string, e.g. 2024/01/07
+
+tags:
+  - bullet list
+  - of tags
+---
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Adding Posts
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+The files are automatically processed at build time to generate corresponding endpoints. Creating a new post to the site is as simple as inserting a new file in the `data/md/blog` directory.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- create new post markdown file
+- set appropriate metadata at the top of the file
+- redeploy app
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Photos
 
-## Learn More
+All of the images in the Photos page are stored in Google Drive. The files are statically incorporated at build time, and the app leverages Next.js `Image` component features to dynamically load the files at runtime. This means that the files are accessed from Google Drive once at build time, and then stored and accessed through Next.js CDN.
 
-To learn more about Next.js, take a look at the following resources:
+The google drive build time integration uses the `@googleapis/drive` library. A couple environment variables are required:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `GOOGLE_DRIVE_CLIENT_EMAIL`
+- `GOOGLE_DRIVE_PRIVATE_KEY`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Adding Photos
 
-## Deploy on Vercel
+- upload photos to Google Drive folder `Personal Site/Photos`
+  - optional: set file description in google drive webview to be used as caption
+- compress to smaller size (less than 1 MB)
+  - `mogrify -define jpeg:extent=500kb *.jpg`
+- redeploy app
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Database
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The app currently uses Redis to persist a few bits of data
+
+- guestbook entries
+- `/reveal` word
+
+The redis access is managed through an environment variable, locally through `.env.local` and in production through Vercel build environments.
+
+The `REDIS_URL` env is `redis://${user}:${password}@${public db endpoint}`
