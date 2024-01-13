@@ -37,15 +37,43 @@ const downloadFile = async (url: string, filePath: string) => {
   });
 };
 
+const getImageTime = (
+  filename: string,
+  timestamp: string | undefined
+): Date => {
+  if (timestamp) {
+    const parts = timestamp.split(" ");
+    if (parts.length === 2) {
+      let [date, time] = parts;
+      date = date.replaceAll(":", "-");
+
+      const formatted = `${date}T${time}`;
+      return new Date(formatted);
+    }
+
+    return new Date(timestamp);
+  }
+
+  const match = filename.match(
+    /.*_*(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2}).*/
+  );
+  if (match) {
+    const [_, year, month, day, hh, mm, ss] = match;
+    const formatted = `${year}-${month}-${day}T${hh}:${mm}:${ss}`;
+
+    return new Date(formatted);
+  }
+
+  return new Date();
+};
+
 export const getPhotos = async (): Promise<Photo[]> => {
   const DEFAULT_BLUR_BASE_64 =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAEElEQVQImWOQ1rCFIwacHABzjwYBnpNl1QAAAABJRU5ErkJggg==";
 
-  const PHOTOS_FOLDER_ID = "1-e1OoDPxuuN6S89vbSMSXNBVwd2Ujj9V";
-  const photos: Photo[] = [];
-
   const scopes = ["https://www.googleapis.com/auth/drive.readonly"];
   const driveApi = getDriveApi(scopes);
+  const photos: Photo[] = [];
 
   try {
     if (!fs.existsSync(DRIVE_IMAGE_PATH)) {
@@ -54,7 +82,7 @@ export const getPhotos = async (): Promise<Photo[]> => {
 
     // get all files in the photos folder
     const response = await driveApi.files.list({
-      q: `'${PHOTOS_FOLDER_ID}' in parents`,
+      q: `'${process.env.GOOGLE_DRIVE_PHOTOS_FOLDER_ID}' in parents`,
       // query fields must include relevant properties indicated in `Photo` type
       fields:
         "files(id, name, description, fileExtension, modifiedTime, imageMediaMetadata, webContentLink)",
@@ -76,13 +104,15 @@ export const getPhotos = async (): Promise<Photo[]> => {
         console.log(`Failed to generate placeholder blur: ${e.message}`);
       }
 
+      const time = getImageTime(file.name!, file.imageMediaMetadata?.time);
+
       // assert that properties are defined, since they should be included in query
       photos.push({
         path: imagePath,
         blurDataURL: blurPlaceholder?.base64 ?? DEFAULT_BLUR_BASE_64,
         id: file.id!,
         name: file.name!,
-        modifiedTime: file.modifiedTime!,
+        modifiedTime: time.toISOString(),
         imageMediaMetadata: {
           height: file.imageMediaMetadata!.height!,
           width: file.imageMediaMetadata!.width!,

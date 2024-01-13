@@ -32,6 +32,7 @@ The google drive build time integration uses the `@googleapis/drive` library. A 
 
 - `GOOGLE_DRIVE_CLIENT_EMAIL`
 - `GOOGLE_DRIVE_PRIVATE_KEY`
+- `GOOGLE_DRIVE_PHOTOS_FOLDER_ID`
 
 ### Adding Photos
 
