@@ -51,11 +51,6 @@ const Photos: NextPage<PhotosProps> = (props) => {
 
 export const getStaticProps: GetStaticProps<PhotosProps> = async () => {
   const photos = await getPhotos();
-
-  photos.sort(
-    (a, b) =>
-      new Date(b.modifiedTime).getTime() - new Date(a.modifiedTime).getTime()
-  );
   return { props: { photos } };
 };
 

@@ -124,6 +124,11 @@ export const getPhotos = async (): Promise<Photo[]> => {
     console.log(err);
   }
 
+  photos.sort(
+    (a, b) =>
+      new Date(b.modifiedTime).getTime() - new Date(a.modifiedTime).getTime()
+  );
+
   // cache photo metadata into filesystem for reuse
   const data = JSON.stringify(photos);
   fs.writeFileSync(IMAGE_METADATA_FILE, data);
