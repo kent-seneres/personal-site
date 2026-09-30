@@ -34,6 +34,9 @@ The google drive build time integration uses the `@googleapis/drive` library. A 
 - `GOOGLE_DRIVE_PRIVATE_KEY`
 - `GOOGLE_DRIVE_PHOTOS_FOLDER_ID`
 
+To set up the service account, go to https://console.cloud.google.com and navigate: New project -> IAM & Admin -> Service Accounts
+
+
 ### Adding Photos
 
 - upload photos to Google Drive folder `Personal Site/Photos`
