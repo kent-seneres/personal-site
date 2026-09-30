@@ -2,6 +2,7 @@
 
 # downloaded content at build time
 public/images/drive/*
+public/drive-images-metadata.json
 
 # dependencies
 /node_modules
