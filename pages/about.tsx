@@ -6,7 +6,7 @@ import { ContentType, PostData } from "@lib/types";
 import PageWrapper from "@components/PageWrapper";
 import Markdown from "@components/Markdown";
 
-import profile from "public/images/profile.jpg";
+import profile from "../public/images/profile.jpg";
 
 type AboutProps = {
   aboutPost: PostData;

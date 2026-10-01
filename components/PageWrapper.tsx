@@ -8,7 +8,7 @@ type PageWrapperProps = {
   iconPath?: string;
 };
 
-const PageWrapper: React.FC<PageWrapperProps> = (props) => {
+const PageWrapper: React.FC<React.PropsWithChildren<PageWrapperProps>> = (props) => {
   const title = props.title ?? globals.name;
   const iconPath = props.iconPath ?? "/favicon.ico";
 

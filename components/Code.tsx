@@ -2,7 +2,7 @@ import React from "react";
 import { PrismLight, PrismAsyncLight } from "react-syntax-highlighter";
 import darcula from "react-syntax-highlighter/dist/cjs/styles/prism/darcula";
 
-const SyntaxHighlighter =
+const SyntaxHighlighter: any =
   typeof window === "undefined" ? PrismLight : PrismAsyncLight;
 
 type CodeProps = {
