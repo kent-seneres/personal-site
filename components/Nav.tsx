@@ -60,7 +60,7 @@ const Nav: React.FC<NavProps> = (props) => {
         <NavItems />
       </div>
       <button
-        className="block md:hidden p-1"
+        className="block sm:hidden p-1"
         onClick={() => setOptionsVisible(true)}
       >
         <FiMoreVertical className="h-6 w-6 opacity-60 hover:opacity-100" />
