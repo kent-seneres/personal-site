@@ -52,7 +52,7 @@ const CommentForm: React.FC<CommentFormProps> = () => {
               required: true,
               maxLength: NAME_CHAR_LIMIT,
             })}
-            className={`p-2 rounded-lg border focus:outline-none w-full ${
+            className={`p-2 focus:ring-2 focus:ring-sky-600 bg-white rounded-lg border focus:outline-hidden w-full ${
               errors.name ? "border-red-200" : ""
             }`}
           />
@@ -71,7 +71,7 @@ const CommentForm: React.FC<CommentFormProps> = () => {
               required: true,
               maxLength: CONTENT_CHAR_LIMIT,
             })}
-            className={`p-2 rounded-lg border focus:outline-none w-full ${
+            className={`p-2 bg-white focus:ring-2 focus:ring-sky-600 rounded-lg border focus:outline-hidden w-full ${
               errors.content ? "border-red-200" : ""
             }`}
           />

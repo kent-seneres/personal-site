@@ -19,7 +19,7 @@ const Tile: React.FC<TileProps> = (props) => {
 
   return (
     <div
-      className={`flex flex-1 h-16 max-w-[4rem] items-center justify-center border-slate-400 rounded m-0.5 ${color} ${border}`}
+      className={`flex flex-1 h-16 max-w-16 items-center justify-center border-slate-400 rounded-sm m-0.5 ${color} ${border}`}
     >
       <span className="text-2xl font-bold text-slate-50">{props.value}</span>
     </div>
