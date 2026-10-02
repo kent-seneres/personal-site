@@ -10,10 +10,8 @@ tags:
 ---
 
 Hello there! My name is Kent (Ian) Seneres.
-Most people know me as Kent. Some people (family) refer to me as Ian.
-The dog is Mochiko, my sister's shiba inu, and he is usually very nice unless you hold him up for too long.
+Most people know me as Kent. Some people (family) refer to me as Ian. The dog is Ray Ray, our incredibly sweet foster fail that has turned out to be the best dog ever, even when she jumps on the counter to scavenge whatever snacks you forget to put away (e.g. apples, or chocolates).
 
-I currently work as a software engineer for a digital therapeutics company in Portland, Maine.
-I primarily work with React Native and Android, but I've dabbled in the full stack of web development.
+I've been working as a software engineer for a digital therapeutics company in Portland, Maine. I primarily work with React Native and Android, but I've dabbled in the full stack of web development and data engineering. Over the years, I've realized that I care most about solving problems, and that learning and yielding the appropriate tools is just part of the solution.
 
-I enjoy learning and doing things. I generally like to hike, bike, run, play video games, and more recently, spend time on the piano.
+I enjoy learning and doing things. Most recently, I'm spending my time woodworking, particularly designing and building furniture. I'm also playing badminton, and generally like to hike, bike, and run.

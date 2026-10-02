@@ -14,7 +14,7 @@ const PageWrapper: React.FC<React.PropsWithChildren<PageWrapperProps>> = (props)
 
   return (
     <div className="bg-linear-to-b from-slate-100 via-sky-100 to-sky-100">
-      <div className="max-w-4xl mx-auto p-2 ">
+      <div className="max-w-5xl mx-auto p-2 ">
         <Head>
           <title>{title}</title>
           <link rel="icon" href={iconPath} />
