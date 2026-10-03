@@ -99,7 +99,8 @@ export const getPhotos = async (): Promise<Photo[]> => {
       let blurPlaceholder = null;
       try {
         console.log('Getting placeholder', filePath)
-        blurPlaceholder = await getPlaiceholder(imagePath);
+        const buffer = fs.readFileSync(filePath);
+        blurPlaceholder = await getPlaiceholder(buffer);
       } catch (e: any) {
         console.log(`Failed to generate placeholder blur: ${e.message}`);
       }
