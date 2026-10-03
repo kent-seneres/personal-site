@@ -1,7 +1,6 @@
 import { auth, drive } from "@googleapis/drive";
 import fs from "fs";
 import path from "path";
-import fetch from "node-fetch";
 import { getPlaiceholder } from "plaiceholder";
 import { Photo } from "./types";
 

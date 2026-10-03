@@ -8,8 +8,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@googleapis/drive": "^2.1.0",
-    "@types/node-fetch": "^2.6.10",
+    "@googleapis/drive": "^26.0.1",
     "gray-matter": "^4.0.3",
     "next": "16.3.8",
     "plaiceholder": "^2.2.0",
