@@ -9,21 +9,21 @@ type MarkdownProps = {
 
 const Markdown: React.FC<MarkdownProps> = (props) => {
   return (
-    <ReactMarkdown
-      className={`prose ${props.customClassName}`}
-      linkTarget="_blank"
-      components={{
-        code({ className, children }) {
-          const match = /language-(\w+)/.exec(className ?? "") ?? [];
-          const language = match[1];
-          return (
-            <Code language={language} value={String(children).trimEnd()} />
-          );
-        },
-      }}
-    >
-      {props.content}
-    </ReactMarkdown>
+    <div className={`prose ${props.customClassName}`}>
+      <ReactMarkdown
+        components={{
+          code({ className, children }) {
+            const match = /language-(\w+)/.exec(className ?? "") ?? [];
+            const language = match[1];
+            return (
+              <Code language={language} value={String(children).trimEnd()} />
+            );
+          },
+        }}
+      >
+        {props.content}
+      </ReactMarkdown>
+    </div>
   );
 };
 
