@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps<BlogProps> = () => {
     props: {
       posts,
       title: "Blog Posts",
-      description: "Collection of random thoughts, cheers.",
+      description: "Collection of random thoughts. Cheers!",
     },
   };
 };
