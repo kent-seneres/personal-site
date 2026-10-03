@@ -9,7 +9,7 @@ const ROOT_PUBLIC_PATH = "public";
 const DRIVE_IMAGE_PATH = path.join(ROOT_PUBLIC_PATH, "images", "drive");
 const IMAGE_METADATA_FILE = path.join(
   ROOT_PUBLIC_PATH,
-  "drive-images-metadata.json"
+  "drive-images-metadata.json",
 );
 
 const getDriveApi = (scopes: string | string[]) => {
@@ -26,20 +26,9 @@ const getImageFilePath = (fileName: string): string => {
   return path.join(DRIVE_IMAGE_PATH, fileName);
 };
 
-const downloadFile = async (url: string, filePath: string) => {
-  const res = await fetch(url);
-  const fileStream = fs.createWriteStream(filePath);
-
-  await new Promise((resolve, reject) => {
-    res.body?.pipe(fileStream);
-    res.body?.on("error", reject);
-    fileStream.on("finish", resolve);
-  });
-};
-
 const getImageTime = (
   filename: string,
-  timestamp: string | undefined
+  timestamp: string | undefined,
 ): Date => {
   if (timestamp) {
     const parts = timestamp.split(" ");
@@ -55,7 +44,7 @@ const getImageTime = (
   }
 
   const match = filename.match(
-    /.*_*(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2}).*/
+    /.*_*(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2}).*/,
   );
   if (match) {
     const [_, year, month, day, hh, mm, ss] = match;
@@ -85,13 +74,24 @@ export const getPhotos = async (): Promise<Photo[]> => {
       q: `'${process.env.GOOGLE_DRIVE_PHOTOS_FOLDER_ID}' in parents`,
       // query fields must include relevant properties indicated in `Photo` type
       fields:
-        "files(id, name, description, fileExtension, modifiedTime, imageMediaMetadata, webContentLink)",
+        "files(id, name, description, fileExtension, modifiedTime, imageMediaMetadata)",
     });
 
     for (const file of response.data.files ?? []) {
       const filePath = getImageFilePath(`${file.id}.${file.fileExtension}`);
-      if (file.webContentLink && !fs.existsSync(filePath)) {
-        await downloadFile(file.webContentLink, filePath);
+      const response = await driveApi.files.get(
+        { fileId: file.id, alt: "media" },
+        { responseType: "stream" },
+      );
+
+      if (!fs.existsSync(filePath)) {
+        console.log('Downloading file', filePath)
+        const dest = fs.createWriteStream(filePath);
+        await new Promise((resolve, reject) => {
+          response.data?.pipe(dest);
+          response.data?.on("error", reject);
+          dest.on("finish", resolve);
+        });
       }
 
       // trim off root public directory from path for image src
@@ -99,6 +99,7 @@ export const getPhotos = async (): Promise<Photo[]> => {
 
       let blurPlaceholder = null;
       try {
+        console.log('Getting placeholder', filePath)
         blurPlaceholder = await getPlaiceholder(imagePath);
       } catch (e: any) {
         console.log(`Failed to generate placeholder blur: ${e.message}`);
@@ -126,7 +127,7 @@ export const getPhotos = async (): Promise<Photo[]> => {
 
   photos.sort(
     (a, b) =>
-      new Date(b.modifiedTime).getTime() - new Date(a.modifiedTime).getTime()
+      new Date(b.modifiedTime).getTime() - new Date(a.modifiedTime).getTime(),
   );
 
   // cache photo metadata into filesystem for reuse
