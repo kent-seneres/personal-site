@@ -35,7 +35,7 @@ const Markdown: React.FC<MarkdownProps> = (props) => {
 
               const resolvedSrc = url.pathname;
               return (
-                <div className="flex flex-col mx-auto">
+                <span className="flex flex-col mx-auto">
                   <Image
                     src={resolvedSrc}
                     alt={alt || "Markdown image"}
@@ -53,7 +53,7 @@ const Markdown: React.FC<MarkdownProps> = (props) => {
                   {alt && (
                     <span className="mt-2 text-sm text-center">{alt}</span>
                   )}
-                </div>
+                </span>
               );
             } catch (e) {
               console.error(

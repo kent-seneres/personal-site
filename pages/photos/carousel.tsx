@@ -49,11 +49,20 @@ const Carousel: NextPage<CarouselProps> = (props) => {
   const dismiss = () => router.back();
 
   return (
-    <div className="fixed flex justify-center h-full w-full bg-black">
+    <div className="fixed flex justify-center h-screen w-screen bg-black">
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <div className="fixed w-screen inset-16 -ml-16 ">
+      <div className="fixed top-0 h-16 w-full justify-items-end">
+        <button
+          className="cursor-pointer h-16 opacity-50 hover:opacity-100 flex flex-row items-center"
+          onClick={dismiss}
+        >
+          <p className="text-white">Close</p>
+          <FiXCircle color="white" className="h-16 w-16 p-4" />
+        </button>
+      </div>
+      <div className="fixed inset-x-0 inset-y-16 ">
         {photo && (
           <Image
             src={photo.path}
@@ -64,28 +73,28 @@ const Carousel: NextPage<CarouselProps> = (props) => {
           />
         )}
       </div>
-      <div className="fixed top-0 h-16 w-screen max-w-4xl">
-        <button
-          className="absolute left-full -ml-16 h-16 opacity-50 hover:opacity-90"
-          onClick={dismiss}
-        >
-          <FiXCircle color="white" className="h-16 w-16 p-4" />
-        </button>
-      </div>
       <div className="absolute top-full -mt-16 h-16 w-screen max-w-4xl overflow-hidden">
-        <div className="flex justify-between items-center h-full">
-          <Link href={`#${previous}`} replace={true} passHref={true}>
-            <button className="opacity-50 hover:opacity-100">
-              <FiArrowLeftCircle color="white" className="h-16 w-16 p-4" />
-            </button>
+        <div className="flex justify-between items-center">
+          <Link
+            href={`#${previous}`}
+            replace={true}
+            aria-disabled={selectedPhoto === 0}
+            className={`${selectedPhoto === 0 ? "pointer-events-none" : ""} opacity-50 hover:opacity-100 disabled:hover:opacity-50 flex flex-row items-center`}
+          >
+            <FiArrowLeftCircle color="white" className="h-16 w-16 p-4" />
+            <p className="text-white">Previous</p>
           </Link>
 
           <p className="text-white text-center">{photo?.description}</p>
 
-          <Link href={`#${next}`} replace={true} passHref={true}>
-            <button className="opacity-50 hover:opacity-100">
-              <FiArrowRightCircle color="white" className="h-16 w-16 p-4" />
-            </button>
+          <Link
+            href={`#${next}`}
+            replace={true}
+            aria-disabled={selectedPhoto === photos.length - 1}
+            className={`${selectedPhoto === photos.length - 1 ? "pointer-events-none" : ""} opacity-50 hover:opacity-100 disabled:hover:opacity-50 flex flex-row items-center`}
+          >
+            <p className="text-white">Next</p>
+            <FiArrowRightCircle color="white" className="h-16 w-16 p-4" />
           </Link>
         </div>
       </div>

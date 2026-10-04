@@ -4,15 +4,15 @@ import LinkButton from "@components/LinkButton";
 
 const NavItems: React.FC = () => {
   return (
-    <nav className="text-sm font-medium">
-      <ul className="flex flex-col space-y-2 sm:flex-row sm:flex-wrap sm:space-y-0 sm:space-x-2">
+    <div className="text-sm font-medium">
+      <div className="flex flex-col space-y-2 sm:flex-row sm:flex-wrap sm:space-y-0 sm:space-x-2">
         <LinkButton href="/blog">Blog</LinkButton>
         <LinkButton href="/photos">Photos</LinkButton>
         <LinkButton href="/projects">Projects</LinkButton>
         {/* <LinkButton href="/guestbook">Guestbook</LinkButton> */}
         <LinkButton href="/about">About</LinkButton>
-      </ul>
-    </nav>
+      </div>
+    </div>
   );
 };
 
@@ -56,7 +56,7 @@ const Nav: React.FC<NavProps> = (props) => {
 
   return (
     <div>
-      <div className="hidden md:block">
+      <div className="hidden sm:block">
         <NavItems />
       </div>
       <button

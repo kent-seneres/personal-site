@@ -84,7 +84,7 @@ export const getPhotos = async (): Promise<Photo[]> => {
       );
 
       if (!fs.existsSync(filePath)) {
-        console.log('Downloading file', filePath)
+        console.log("Downloading file", filePath);
         const dest = fs.createWriteStream(filePath);
         await new Promise((resolve, reject) => {
           response.data?.pipe(dest);
