@@ -1,4 +1,4 @@
-import { auth, drive } from "@googleapis/drive";
+import { auth, drive, drive_v3 } from "@googleapis/drive";
 import fs from "fs";
 import path from "path";
 import { getPlaiceholder } from "plaiceholder";
@@ -55,13 +55,60 @@ const getImageTime = (
   return new Date();
 };
 
-export const getPhotos = async (): Promise<Photo[]> => {
-  const DEFAULT_BLUR_BASE_64 =
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAEElEQVQImWOQ1rCFIwacHABzjwYBnpNl1QAAAABJRU5ErkJggg==";
+const getPhoto = async (
+  driveApi: drive_v3.Drive,
+  file: drive_v3.Schema$File,
+): Promise<Photo> => {
+  const filePath = getImageFilePath(`${file.id}.${file.fileExtension}`);
+  const response = await driveApi.files.get(
+    { fileId: file.id, alt: "media" },
+    { responseType: "stream" },
+  );
 
+  if (!fs.existsSync(filePath)) {
+    console.log("Downloading file", filePath);
+    const dest = fs.createWriteStream(filePath);
+    await new Promise((resolve, reject) => {
+      response.data?.pipe(dest);
+      response.data?.on("error", reject);
+      dest.on("finish", resolve);
+    });
+  }
+
+  // trim off root public directory from path for image src
+  const imagePath = filePath.replace(ROOT_PUBLIC_PATH, "");
+
+  let blurPlaceholder = null;
+  try {
+    console.log("Getting placeholder", filePath);
+    const buffer = fs.readFileSync(filePath);
+    blurPlaceholder = await getPlaiceholder(buffer);
+  } catch (e: any) {
+    console.log(`Failed to generate placeholder blur: ${e.message}`);
+  }
+
+  const time = getImageTime(file.name!, file.imageMediaMetadata?.time);
+  return {
+    path: imagePath,
+    blurDataURL: blurPlaceholder?.base64 ?? DEFAULT_BLUR_BASE_64,
+    id: file.id!,
+    name: file.name!,
+    modifiedTime: time.toISOString(),
+    imageMediaMetadata: {
+      height: file.imageMediaMetadata!.height!,
+      width: file.imageMediaMetadata!.width!,
+    },
+    description: file.description ?? null,
+  };
+};
+
+const DEFAULT_BLUR_BASE_64 =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAEElEQVQImWOQ1rCFIwacHABzjwYBnpNl1QAAAABJRU5ErkJggg==";
+
+export const getPhotos = async (): Promise<Photo[]> => {
   const scopes = ["https://www.googleapis.com/auth/drive.readonly"];
   const driveApi = getDriveApi(scopes);
-  const photos: Photo[] = [];
+  let photos: Photo[] = [];
 
   try {
     if (!fs.existsSync(DRIVE_IMAGE_PATH)) {
@@ -76,51 +123,11 @@ export const getPhotos = async (): Promise<Photo[]> => {
         "files(id, name, description, fileExtension, modifiedTime, imageMediaMetadata)",
     });
 
-    for (const file of response.data.files ?? []) {
-      const filePath = getImageFilePath(`${file.id}.${file.fileExtension}`);
-      const response = await driveApi.files.get(
-        { fileId: file.id, alt: "media" },
-        { responseType: "stream" },
-      );
+    const promises = response.data.files?.map((file) =>
+      getPhoto(driveApi, file),
+    );
 
-      if (!fs.existsSync(filePath)) {
-        console.log("Downloading file", filePath);
-        const dest = fs.createWriteStream(filePath);
-        await new Promise((resolve, reject) => {
-          response.data?.pipe(dest);
-          response.data?.on("error", reject);
-          dest.on("finish", resolve);
-        });
-      }
-
-      // trim off root public directory from path for image src
-      const imagePath = filePath.replace(ROOT_PUBLIC_PATH, "");
-
-      let blurPlaceholder = null;
-      try {
-        console.log('Getting placeholder', filePath)
-        const buffer = fs.readFileSync(filePath);
-        blurPlaceholder = await getPlaiceholder(buffer);
-      } catch (e: any) {
-        console.log(`Failed to generate placeholder blur: ${e.message}`);
-      }
-
-      const time = getImageTime(file.name!, file.imageMediaMetadata?.time);
-
-      // assert that properties are defined, since they should be included in query
-      photos.push({
-        path: imagePath,
-        blurDataURL: blurPlaceholder?.base64 ?? DEFAULT_BLUR_BASE_64,
-        id: file.id!,
-        name: file.name!,
-        modifiedTime: time.toISOString(),
-        imageMediaMetadata: {
-          height: file.imageMediaMetadata!.height!,
-          width: file.imageMediaMetadata!.width!,
-        },
-        description: file.description ?? null,
-      });
-    }
+    photos = await Promise.all(promises);
   } catch (err) {
     console.log(err);
   }
