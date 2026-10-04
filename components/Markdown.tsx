@@ -35,24 +35,16 @@ const Markdown: React.FC<MarkdownProps> = (props) => {
 
               const resolvedSrc = url.pathname;
               return (
-                <span className="flex flex-col mx-auto">
+                <span className="flex flex-col">
                   <Image
                     src={resolvedSrc}
                     alt={alt || "Markdown image"}
                     width={resolvedWidth}
                     height={resolvedHeight}
-                    className="rounded-2xl"
-                    style={{
-                      maxWidth: "100%",
-                      height: "auto",
-                      display: "block",
-                      margin: "0 auto",
-                    }}
+                    className="block rounded-2xl w-full max-w-sm h-auto mx-auto mt-2 mb-2"
                   />
 
-                  {alt && (
-                    <span className="mt-2 text-sm text-center">{alt}</span>
-                  )}
+                  {alt && <span className="text-sm text-center">{alt}</span>}
                 </span>
               );
             } catch (e) {
