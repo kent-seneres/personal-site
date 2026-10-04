@@ -3,7 +3,7 @@ title: Second Post
 description: Five years later...
 
 published: true
-datePublished: 2026/10/03
+datePublished: 2026/10/04
 
 tags:
   - blog
@@ -15,9 +15,9 @@ It's been almost five years since I set up this website and published my first p
 
 AI wasn't yet a big thing at the start of 2022. Now, in the last quarter of 2026, I'm dusting off my website and looking at Vercel's documentation for upgrading to the latest version, and their [recommended method](https://nextjs.org/docs/app/guides/upgrading/version-16) is to just let an agent do it. I wasn't sure what to make of that, so I decided to write this post.
 
-I've been working as a software engineer for a company building an FDA-regulated medical device with proprietary clinical algorithms that is backed by a HIPAA compliant backend infrastructure. Within our small company, we have have the full spectrum of AI boosters and doomers, and we have respectful conversations about how we incorporate it into our work. Our engineering team has been generally cautious about incorporating AI tooling, given the nature of our systems. We all use it regularly to some degree (e.g. Claude), but we have not pushed the agentic development workflow into our primary projects. I personally have not been eager to replace our manual workflows with agents. In our work, implementation has not been the bottleneck, and we have not needed to trade off security, maintainability, and reliability for purported speed of development. That, along with environmental and moral concerns that should not be ignored, have left me with little experience with agentic development.
+I've been working as a software engineer for a company building an FDA-regulated medical device with proprietary clinical algorithms that is backed by a HIPAA compliant backend infrastructure. Within our small company, we have have the full spectrum of AI boosters and doomers, and we have respectful conversations about how we incorporate it into our work. Our engineering team has been generally cautious about incorporating AI tooling, given the nature of our systems. We all use it regularly to some degree (e.g. Claude), but we have not pushed the agentic development workflow into our primary projects. I personally have not been eager to replace our manual workflows with agents. In our work, implementation has not been the bottleneck, and we have not needed to introduce new risks to security, maintainability, and reliability for purported speed of development. That, along with environmental and moral concerns that should not be ignored, have left me with little experience with agentic development.
 
-That all said, it is blindingly clear that the software industry is changing. So while I brush up on the latest on web development to get this site up to date, it is probably a good time to get my hands dirty and get experience with these new tools.
+That all said, it is blindingly clear that the software industry is changing. So while I brush up on the latest on web development to get this site up to date, it is probably a good time to get my hands dirty and get more experience with these new tools.
 
 ### Life
 
