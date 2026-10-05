@@ -33,6 +33,22 @@ const Markdown: React.FC<MarkdownProps> = (props) => {
                 ? parseInt(heightParam, 10)
                 : 450;
 
+              // one of the tailwind sizes below
+              const sizeParam = url.searchParams.get("size");
+
+              // tailwind cannot doesnt allow dynamic string interpolation for the class names,
+              // so need to define a mapping here
+              const maxWidthMap = {
+                "3xs": "max-w-3xs",
+                "2xs": "max-w-2xs",
+                xs: "max-w-xs",
+                sm: "max-w-sm",
+                md: "max-w-md",
+                lg: "max-w-lg",
+                xl: "max-w-xl",
+              };
+              const maxWidthClass = maxWidthMap[sizeParam] ?? "max-w-sm";
+
               const resolvedSrc = url.pathname;
               return (
                 <span className="flex flex-col">
@@ -41,7 +57,7 @@ const Markdown: React.FC<MarkdownProps> = (props) => {
                     alt={alt || "Markdown image"}
                     width={resolvedWidth}
                     height={resolvedHeight}
-                    className="block rounded-2xl w-full max-w-sm h-auto mx-auto mt-2 mb-2"
+                    className={`rounded-2xl w-full ${maxWidthClass} h-auto mx-auto mt-2 mb-2`}
                   />
 
                   {alt && <span className="text-sm text-center">{alt}</span>}
