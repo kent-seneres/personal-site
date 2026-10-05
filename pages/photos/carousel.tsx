@@ -53,7 +53,7 @@ const Carousel: NextPage<CarouselProps> = (props) => {
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <div className="fixed top-0 h-16 w-full justify-items-end">
+      <div className="fixed top-0 h-16 w-full flex justify-end max-w-4xl">
         <button
           className="cursor-pointer h-16 opacity-50 hover:opacity-100 flex flex-row items-center"
           onClick={dismiss}
