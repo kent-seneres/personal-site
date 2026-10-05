@@ -17,7 +17,6 @@ const Carousel: NextPage<CarouselProps> = (props) => {
   const pageTitle = `Photos - ${globals.name}`;
 
   const [photos, setPhotos] = React.useState<Photo[]>([]);
-  const [selectedPhoto, setSelectedPhoto] = React.useState<number>(-1);
   const router = useRouter();
 
   React.useEffect(() => {
@@ -27,15 +26,14 @@ const Carousel: NextPage<CarouselProps> = (props) => {
       .catch((e) => console.log(e));
   }, [props.metadataFile]);
 
-  React.useEffect(() => {
-    let match = router.asPath.match(/#([0-9]+)/);
-    if (match) {
-      const id = parseInt(match[1]);
-      if (id >= 0 && id < photos.length) {
-        setSelectedPhoto(id);
-      }
+  let selectedPhoto = -1;
+  let match = router.asPath.match(/#([0-9]+)/);
+  if (match) {
+    const id = parseInt(match[1]);
+    if (id >= 0 && id < photos.length) {
+      selectedPhoto = id;
     }
-  }, [photos, router.asPath]);
+  }
 
   const photo: Photo | undefined = photos[selectedPhoto];
   const previous = selectedPhoto > 0 ? selectedPhoto - 1 : 0;

@@ -24,11 +24,13 @@ const CommentForm: React.FC<CommentFormProps> = () => {
     submit(data);
   };
 
-  React.useEffect(() => {
+  const [previousSuccess, setPreviousSuccess] = React.useState(success);
+  if (success != previousSuccess) {
     if (success) {
       reset();
     }
-  }, [success]);
+    setPreviousSuccess(success);
+  }
 
   return (
     <div className="self-center max-w-xl w-full">

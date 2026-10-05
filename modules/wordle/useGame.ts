@@ -18,19 +18,21 @@ const useGame = ({ answer, limit }: GameProps) => {
   >({});
 
   /**
-   * Effect to continue the game if the limit changes
+   * Continue the game if the limit changes
    * (practically, it should only increase)
    */
-  React.useEffect(() => {
+  const [previousLimit, setPreviousLimit] = React.useState(limit);
+  if (limit !== previousLimit) {
+    setPreviousLimit(limit);
     setDone(false);
-  }, [limit]);
+  }
 
   // map of letter and number of instances of the letter in the answer
   const letterCounts = Array.from(answer).reduce(
     (acc: Record<string, number>, c: string) => {
       return { ...acc, [c]: acc[c] ? acc[c] + 1 : 1 };
     },
-    {}
+    {},
   );
 
   const submit = () => {
@@ -43,8 +45,8 @@ const useGame = ({ answer, limit }: GameProps) => {
         answer[index] === value
           ? LetterState.CORRECT
           : answer.includes(value)
-          ? LetterState.MISPLACED
-          : LetterState.INVALID;
+            ? LetterState.MISPLACED
+            : LetterState.INVALID;
 
       return { value, state };
     });

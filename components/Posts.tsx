@@ -52,31 +52,24 @@ type PostsProps = {
 
 const Posts: React.FC<PostsProps> = (props) => {
   const router = useRouter();
-  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const queryTags = router.query.tag
+    ? Array.isArray(router.query.tag)
+      ? router.query.tag
+      : [router.query.tag]
+    : [];
 
   const posts = props.posts;
-
   const allTags = posts.reduce(
     (tags, post) => new Set([...tags, ...(post.tags ?? [])]),
-    new Set<string>()
+    new Set<string>(),
   );
+  const selectedTags = queryTags.filter((t) => allTags.has(t));
 
   const selectTag = (tag: string) => {
     router.push({
       query: { ...router.query, tag },
     });
   };
-
-  React.useEffect(() => {
-    const queryTags = router.query.tag
-      ? Array.isArray(router.query.tag)
-        ? router.query.tag
-        : [router.query.tag]
-      : [];
-
-    const validTags = queryTags.filter((t) => allTags.has(t));
-    setSelectedTags(validTags);
-  }, [router.query]);
 
   if (posts.length === 0) {
     return <p className="text-xl text-left my-4">No posts!</p>;
@@ -89,7 +82,7 @@ const Posts: React.FC<PostsProps> = (props) => {
           .filter(
             (post) =>
               selectedTags.length === 0 ||
-              post.tags?.some((t) => selectedTags.includes(t))
+              post.tags?.some((t) => selectedTags.includes(t)),
           )
           .map((post) => {
             return (
