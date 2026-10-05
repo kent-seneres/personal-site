@@ -36,6 +36,7 @@ const Photos: NextPage<PhotosProps> = (props) => {
                   src={photo.path}
                   alt={photo.name}
                   fill
+                  sizes="(max-width: 650px) 100vw, (max-width: 768px) 50vw, (max-width: 1000px) 33vw, 25vw"
                   placeholder="blur"
                   blurDataURL={photo.blurDataURL}
                   title={photo.description ?? undefined}

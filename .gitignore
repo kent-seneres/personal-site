@@ -2,6 +2,7 @@
 
 # downloaded content at build time
 public/images/drive/*
+public/drive-images-metadata.json
 
 # dependencies
 /node_modules
@@ -14,6 +15,7 @@ public/images/drive/*
 # next.js
 /.next/
 /out/
+next-env.d.ts
 
 # production
 /build
@@ -26,6 +28,7 @@ public/images/drive/*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.yarn/install-state.gz
 
 # local env files
 .env.local

@@ -21,11 +21,11 @@ const Tortle: NextPage = () => {
     ? "🐢 you got it 🐢"
     : "you did not get it\ntry again tomorrow";
 
-  React.useEffect(() => {
-    if (done) {
-      setDoneVisible(true);
-    }
-  }, [done]);
+  const [previousDone, setPreviousDone] = React.useState(done);
+  if (done != previousDone && done) {
+    setDoneVisible(true);
+    setPreviousDone(done);
+  }
 
   React.useEffect(() => {
     keyboardRef.current?.scrollIntoView();

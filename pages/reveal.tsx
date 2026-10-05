@@ -22,7 +22,11 @@ const Reveal: NextPage = () => {
   const [showConfetti, setShowConfetti] = React.useState(false);
   const keyboardRef = React.useRef<HTMLDivElement>(null);
 
-  const { data: answer, loading, error } = useGetWord();
+  const {
+    data: answer,
+    loading,
+    error,
+  } = { data: "test", loading: false, error: undefined };
 
   const { board, activeRow, done, winner, onKey, keyState } = useGame({
     answer: answer,
@@ -52,27 +56,36 @@ const Reveal: NextPage = () => {
     ? `⭐️ you got it ⭐️${limit === DEFAULT_LIMIT ? "" : "\n\n(first try)"}`
     : "you did not get it\ntry again tomorrow";
 
-  React.useEffect(() => {
-    if (done)
+  const [previousDone, setPreviousDone] = React.useState(done);
+  if (done != previousDone) {
+    setDoneVisible(done);
+    setPreviousDone(done);
+
+    if (done) {
       if (winner) {
         setDoneVisible(true);
       } else {
         // increase limit, so there are no losers
         setLimit((prev) => prev + 1);
       }
-  }, [done]);
+    }
+  }
 
   React.useEffect(() => {
     keyboardRef.current?.scrollIntoView();
   }, [board]);
 
+  const [previousWinner, setPreviousWinner] = React.useState(winner);
+  if (winner != previousWinner && winner) {
+    setPreviousWinner(winner);
+    setShowConfetti(winner);
+  }
+
   /**
    * Effect to show confetti on winning and hide after timeout
    */
   React.useEffect(() => {
-    setShowConfetti(winner);
     const timeout = setTimeout(() => setShowConfetti(false), 30000);
-
     return () => clearTimeout(timeout);
   }, [winner]);
 

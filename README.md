@@ -26,7 +26,7 @@ The files are automatically processed at build time to generate corresponding en
 
 ## Photos
 
-All of the images in the Photos page are stored in Google Drive. The files are statically incorporated at build time, and the app leverages Next.js `Image` component features to dynamically load the files at runtime. This means that the files are accessed from Google Drive once at build time, and then stored and accessed through Next.js CDN.
+All of the images in the Photos page are stored in Google Drive. The files are statically incorporated at build time, and the app leverages Next.js `Image` component features to dynamically load the files at runtime. This means that the files are accessed from Google Drive once at build time, and then stored and accessed through Vercel's CDN.
 
 The google drive build time integration uses the `@googleapis/drive` library. A couple environment variables are required:
 
@@ -34,10 +34,18 @@ The google drive build time integration uses the `@googleapis/drive` library. A 
 - `GOOGLE_DRIVE_PRIVATE_KEY`
 - `GOOGLE_DRIVE_PHOTOS_FOLDER_ID`
 
+To set up the service account, go to https://console.cloud.google.com and navigate: New project -> IAM & Admin -> Service Accounts
+
+The service account needs access to the Google Drive folder.
+
+- Create a drive folder and share it to the service account email with viewer access, e.g. `Personal Site`
+- Create a subfolder to store photos, `Photos`
+- Use the `Personal Site/Photos` drive id (obtained from URL slug) as the `GOOGLE_DRIVE_PHOTOS_FOLDER_ID`
+
 ### Adding Photos
 
 - upload photos to Google Drive folder `Personal Site/Photos`
-  - optional: set file description in google drive webview to be used as caption
+  - optional: set file description in google drive webview, which will be used as caption
 - compress to smaller size (less than 1 MB)
   - `mogrify -define jpeg:extent=500kb *.jpg`
 - redeploy app

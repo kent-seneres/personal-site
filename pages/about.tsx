@@ -6,7 +6,7 @@ import { ContentType, PostData } from "@lib/types";
 import PageWrapper from "@components/PageWrapper";
 import Markdown from "@components/Markdown";
 
-import profile from "public/images/profile.jpg";
+import profile from "../public/images/profile.jpg";
 
 type AboutProps = {
   aboutPost: PostData;
@@ -26,7 +26,7 @@ const About: NextPage<AboutProps> = (props) => {
             alt="Picture of the author"
             width={256}
             height={256}
-            className="rounded-2xl"
+            className="rounded-2xl w-auto"
             placeholder="blur"
           />
           <p className="mt-4 text-xl font-medium">{globals.name}</p>

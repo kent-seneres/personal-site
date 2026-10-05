@@ -7,11 +7,7 @@ import React from "react";
 import globals from "@lib/globals";
 import { getMetadataFile } from "@lib/api";
 import { Photo } from "@lib/types";
-import {
-  FiXCircle,
-  FiArrowLeftCircle,
-  FiArrowRightCircle,
-} from "react-icons/fi";
+import { FiXCircle, FiArrowLeft, FiArrowRight } from "react-icons/fi";
 
 type CarouselProps = {
   metadataFile: string;
@@ -21,7 +17,6 @@ const Carousel: NextPage<CarouselProps> = (props) => {
   const pageTitle = `Photos - ${globals.name}`;
 
   const [photos, setPhotos] = React.useState<Photo[]>([]);
-  const [selectedPhoto, setSelectedPhoto] = React.useState<number>(-1);
   const router = useRouter();
 
   React.useEffect(() => {
@@ -31,15 +26,14 @@ const Carousel: NextPage<CarouselProps> = (props) => {
       .catch((e) => console.log(e));
   }, [props.metadataFile]);
 
-  React.useEffect(() => {
-    let match = router.asPath.match(/#([0-9]+)/);
-    if (match) {
-      const id = parseInt(match[1]);
-      if (id >= 0 && id < photos.length) {
-        setSelectedPhoto(id);
-      }
+  let selectedPhoto = -1;
+  let match = router.asPath.match(/#([0-9]+)/);
+  if (match) {
+    const id = parseInt(match[1]);
+    if (id >= 0 && id < photos.length) {
+      selectedPhoto = id;
     }
-  }, [photos, router.asPath]);
+  }
 
   const photo: Photo | undefined = photos[selectedPhoto];
   const previous = selectedPhoto > 0 ? selectedPhoto - 1 : 0;
@@ -49,11 +43,20 @@ const Carousel: NextPage<CarouselProps> = (props) => {
   const dismiss = () => router.back();
 
   return (
-    <div className="fixed flex justify-center h-full w-full bg-black">
+    <div className="fixed flex justify-center h-screen w-screen bg-black">
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <div className="fixed w-screen inset-16 -ml-16 ">
+      <div className="fixed top-0 h-16 w-full flex justify-end max-w-4xl">
+        <button
+          className="cursor-pointer h-16 opacity-50 hover:opacity-100 flex flex-row items-center"
+          onClick={dismiss}
+        >
+          <p className="text-white">Close</p>
+          <FiXCircle color="white" className="h-16 w-16 p-4 pl-0" />
+        </button>
+      </div>
+      <div className="fixed inset-x-0 inset-y-16 ">
         {photo && (
           <Image
             src={photo.path}
@@ -64,30 +67,28 @@ const Carousel: NextPage<CarouselProps> = (props) => {
           />
         )}
       </div>
-      <div className="fixed top-0 h-16 w-screen max-w-4xl">
-        <button
-          className="absolute left-full -ml-16 h-16 opacity-50 hover:opacity-90"
-          onClick={dismiss}
+      <div className="z-1 w-screen max-w-4xl h-32 flex flex-row justify-between items-center self-center">
+        <Link
+          href={`#${previous}`}
+          replace={true}
+          aria-disabled={selectedPhoto === 0}
+          className={`${selectedPhoto === 0 ? "pointer-events-none" : ""} opacity-10 hover:opacity-100 h-32 flex items-center`}
         >
-          <FiXCircle color="white" className="h-16 w-16 p-4" />
-        </button>
+          <FiArrowLeft color="white" className="h-24 w-24 p-4" />
+        </Link>
+
+        <Link
+          href={`#${next}`}
+          replace={true}
+          aria-disabled={selectedPhoto === photos.length - 1}
+          className={`${selectedPhoto === photos.length - 1 ? "pointer-events-none" : ""} opacity-10 hover:opacity-100 flex items-center`}
+        >
+          <FiArrowRight color="white" className="h-24 w-24 p-4" />
+        </Link>
       </div>
-      <div className="absolute top-full -mt-16 h-16 w-screen max-w-4xl overflow-hidden">
-        <div className="flex justify-between items-center h-full">
-          <Link href={`#${previous}`} replace={true} passHref={true}>
-            <button className="opacity-50 hover:opacity-100">
-              <FiArrowLeftCircle color="white" className="h-16 w-16 p-4" />
-            </button>
-          </Link>
 
-          <p className="text-white text-center">{photo?.description}</p>
-
-          <Link href={`#${next}`} replace={true} passHref={true}>
-            <button className="opacity-50 hover:opacity-100">
-              <FiArrowRightCircle color="white" className="h-16 w-16 p-4" />
-            </button>
-          </Link>
-        </div>
+      <div className="fixed top-full -mt-16 h-16 w-screen flex items-center justify-center">
+        <p className="text-white text-center">{photo?.description}</p>
       </div>
     </div>
   );
