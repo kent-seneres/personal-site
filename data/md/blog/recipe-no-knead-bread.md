@@ -9,6 +9,10 @@ tags:
   - recipe
 ---
 
+I use a 5 quart dutch oven, but it can certainly fit in a smaller pot.
+
+## Instructions
+
 1. Combine in a large bowl:
    - **2 cups bread flour**
    - **1 teaspoon salt**
