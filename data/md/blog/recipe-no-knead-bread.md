@@ -19,12 +19,20 @@ tags:
    - **~1 cup water** (may need to add more to get the right consistency)
 
 1. Dough should be pretty sticky. Cover bowl and let rise for 8 to 24 hours, or at least double in size.
+   <details>
+   <summary>Notes</summary>
+   In the winter, when it takes a little longer to rise, I typically plan for around 18 hours - prepare at night and bake the next afternoon.
+   </details>
 
 1. Put dough onto a floured surface and carefully fold dough into itself a couple of times. Shape into a ball and place on proving skillet (or back in the same bowl), cover and let rest for at least an hour.
+   <details>
+   <summary>Notes</summary>
+   To minimize cleanup, I just use the lid of the large bowl as my surface. 
+   </details>
 
 1. Put dutch oven with lid in the oven and preheat to **450°F** for about 30 minutes.
 
-1. Carefully plop dough into dutch oven, cover and bake for **25 minutes**.
+1. Carefully plop dough into dutch oven, cover and **bake for 25 minutes**.
 
 1. Remove lid and bake for another **5 to 10 minutes**, until nice deep brown.
 
